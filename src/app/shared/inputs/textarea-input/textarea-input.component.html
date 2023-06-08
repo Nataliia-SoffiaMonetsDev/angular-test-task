@@ -1,11 +1,11 @@
-<div class="mb-3">
+<div [formGroup]="form">
     <label for="fieldId" class="form-label">{{ label }}</label>
-    <textarea class="form-control" id="fieldId" rows="3"></textarea>
-    <div *ngIf="f?.errors" class="invalid-feedback">
+    <textarea class="form-control" id="fieldId" rows="3" [formControlName]="controlName" [ngClass]="{ 'is-invalid': f?.errors && submitted }"></textarea>
+    <div *ngIf="f?.errors && submitted" class="invalid-feedback">
         <div *ngFor="let error of f?.errors | keyvalue">
-          <ng-container *ngIf="error.key === 'message'">
-            {{error.value}}
-          </ng-container>
+            <div *ngFor="let error of f?.errors | keyvalue">
+                {{ getErrorMessage(error.key) }}
+            </div>
         </div>
     </div>
 </div>

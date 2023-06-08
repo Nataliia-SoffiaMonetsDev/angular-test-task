@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddProductModalComponent } from './add-product-modal/add-product-modal.component';
 
 @Component({
-  selector: 'app-products-page',
-  templateUrl: './products-page.component.html',
-  styleUrls: ['./products-page.component.scss']
+    selector: 'app-products-page',
+    templateUrl: './products-page.component.html',
+    styleUrls: ['./products-page.component.scss']
 })
 export class ProductsPageComponent implements OnInit {
-    
+
     public products: any[] = [
         {
             name: 'Product 1',
@@ -18,27 +18,32 @@ export class ProductsPageComponent implements OnInit {
             name: 'Product 2',
             description: 'Some quick example text to build on the card title and make up the bulk of the cards content.',
             id: 2
-        },{
+        }, {
             name: 'Product 3',
             description: 'Some quick example text to build on the card title and make up the bulk of the cards content.',
             id: 3
-        },{
+        }, {
             name: 'Product 4',
             description: 'Some quick example text to build on the card title and make up the bulk of the cards content.',
             id: 4
         },
     ];
+    public loading: boolean = false;
 
     @ViewChild('addProductModalComponent') addProductModalComponent!: AddProductModalComponent;
 
     ngOnInit(): void {
     }
 
-    public addProduct(): void {
+    public openProductModal(): void {
         this.addProductModalComponent.openModal();
     }
 
     public deleteProduct(index: number): void {
         this.products.splice(index, 1);
+    }
+
+    public addProduct(productInfo: any): void {
+        console.log(productInfo);
     }
 }

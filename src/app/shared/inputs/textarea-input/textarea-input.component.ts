@@ -1,23 +1,17 @@
-import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { BaseInputDirective } from '../base-input.directive';
 
 @Component({
     selector: 'app-textarea-input',
     templateUrl: './textarea-input.component.html',
     styleUrls: ['./textarea-input.component.scss']
 })
-export class TextareaInputComponent {
+export class TextareaInputComponent extends BaseInputDirective implements OnInit {
 
-    @Input() label!: string;
-    @Input() controlName!: string;
-    @Input() controlNamePrefix!: string;
-    @Input() form!: FormGroup;
-
-    get f() {
-        return this.form.get(this.controlName);
+    constructor() {
+        super();
     }
 
-    get fieldId(): string {
-        return `${this.controlNamePrefix}_${this.controlName}`;
+    ngOnInit(): void {
     }
 }

@@ -25,10 +25,14 @@ export class ProductCardComponent implements OnInit {
     }
 
     public navigateToProductDetails(index: number): void {
-        this.router.navigate([])
+        this.router.navigate([`/product-details/${index}`]);
+    }
+
+    public openEditModal(product: any) {
+        this.editProductModalComponent.openEditModal(product);
     }
 
     public editProduct(product: any) {
-        this.editProductModalComponent.openModal();
+        console.log(product);
     }
 }

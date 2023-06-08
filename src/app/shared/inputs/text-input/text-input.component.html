@@ -1,13 +1,9 @@
 <div [formGroup]="form">
-    <div class="mb-3">
-        <label [for]="fieldId" class="form-label">{{ label }}</label>
-        <input [type]="type" class="form-control" [id]="fieldId">
-        <div *ngIf="f?.errors" class="invalid-feedback">
-            <div *ngFor="let error of f?.errors | keyvalue">
-              <ng-container *ngIf="error.key === 'message'">
-                {{error.value}}
-              </ng-container>
-            </div>
+    <label [for]="fieldId" class="form-label">{{ label }}</label>
+    <input [type]="type" class="form-control" [id]="fieldId" [formControlName]="controlName" [ngClass]="{ 'is-invalid': f?.errors && submitted }">
+    <div *ngIf="f?.errors && submitted" class="invalid-feedback">
+        <div *ngFor="let error of f?.errors | keyvalue">
+            {{ getErrorMessage(error.key) }}
         </div>
     </div>
 </div>
