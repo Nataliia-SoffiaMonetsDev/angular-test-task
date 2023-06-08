@@ -1,0 +1,32 @@
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add product</h4>
+        <button type="button" class="btn-close pull-right" aria-label="Close" (click)="modalRef.hide()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <!-- <label for="exampleFormControlInput1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            <label for="inputPassword5" class="form-label">Password</label>
+            <input type="password" id="inputPassword5" class="form-control" aria-labelledby="passwordHelpBlock">
+            <div id="passwordHelpBlock" class="form-text">
+                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces,
+                special characters, or emoji.
+            </div> -->
+            <div class="mb-3">
+                <label for="productName" class="form-label">Name</label>
+                <input type="text" class="form-control" id="productName">
+                <div class="invalid-feedback">
+                    Please choose a username.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="productDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="productDescription" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="addProduct()">Add</button>
+    </div>
+</ng-template>
