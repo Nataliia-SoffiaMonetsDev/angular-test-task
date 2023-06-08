@@ -29,6 +29,9 @@ export abstract class BaseInputDirective {
             case 'email':
                 message = '*Please enter valid email';
                 break;
+            case 'mustMatch':
+                message = '*Passwords should match';
+                break;
         }
         return message;
     }

@@ -9,11 +9,20 @@ import { BaseInputDirective } from '../base-input.directive';
 export class TextInputComponent extends BaseInputDirective implements OnInit {
 
     @Input() type: string = 'text';
+    @Input() showIcon: boolean = false;
 
     constructor() {
         super();
     }
 
     ngOnInit(): void {
+    }
+
+    public showPassword(): void {
+        this.type = 'text';
+    }
+
+    public hidePassword(): void {
+        this.type = 'password';
     }
 }

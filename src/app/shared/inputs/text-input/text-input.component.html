@@ -1,6 +1,21 @@
 <div [formGroup]="form">
     <label [for]="fieldId" class="form-label">{{ label }}</label>
-    <input [type]="type" class="form-control" [id]="fieldId" [formControlName]="controlName" [ngClass]="{ 'is-invalid': f?.errors && submitted }">
+    <div class="input-group">
+        <input [type]="type" class="form-control" [id]="fieldId" [formControlName]="controlName"
+            [ngClass]="{ 'is-invalid': f?.errors && submitted }">
+        <div *ngIf="showIcon" class="input-group-append p-1 d-flex align-items-center">
+            <span class="material-symbols-outlined"
+                (mousedown)="showPassword()"
+                (mouseup)="hidePassword()"
+                (mouseout)="hidePassword()"
+                (touchstart)="showPassword()"
+                (touchend)="hidePassword()"
+                (touchmove)="showPassword()"
+                (touchcancel)="hidePassword()">
+                {{ type === 'password' ? 'visibility_off' : 'visibility'}}
+            </span>
+        </div>
+    </div>
     <div *ngIf="f?.errors && submitted" class="invalid-feedback">
         <div *ngFor="let error of f?.errors | keyvalue">
             {{ getErrorMessage(error.key) }}

@@ -29,8 +29,8 @@ export class AddProductModalComponent implements OnInit {
     ngOnInit(): void {
         this.form = this.formBuilder.group({
             productName: this.formBuilder.control(null, { validators: Validators.required }),
-            productDescription: this.formBuilder.control(null, { validators: Validators.required }),
-        })
+            productDescription: this.formBuilder.control(null, { validators: Validators.required })
+        });
     }
 
     public openModal(): void {

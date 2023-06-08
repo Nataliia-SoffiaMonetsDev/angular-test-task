@@ -3,8 +3,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { ProductsPageComponent } from './pages/products-page/products-page.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
+import { RegistrationComponent } from './pages/registration/registration.component';
 
 const routes: Routes = [
+    {
+        path: '',
+        redirectTo: '/registration',
+        pathMatch: 'full'
+    },
+    {
+        path: 'registration',
+        component: RegistrationComponent
+    },
     {
         path: 'login',
         component: LoginComponent

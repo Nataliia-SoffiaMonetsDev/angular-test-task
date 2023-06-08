@@ -15,7 +15,8 @@ import { TextareaInputComponent } from './shared/inputs/textarea-input/textarea-
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
+import { LoadingScreenComponent } from './shared/loading-screen/loading-screen.component';
+import { RegistrationComponent } from './pages/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { LoadingScreenComponent } from './components/loading-screen/loading-scre
     ProductCardComponent,
     TextInputComponent,
     TextareaInputComponent,
-    LoadingScreenComponent
+    LoadingScreenComponent,
+    RegistrationComponent
   ],
   imports: [
     HttpClientModule,
