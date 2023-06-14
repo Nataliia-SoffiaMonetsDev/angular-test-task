@@ -8,7 +8,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { ProductsPageComponent } from './pages/products-page/products-page.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { AddProductModalComponent } from './pages/products-page/add-product-modal/add-product-modal.component';
-import { ProductCardComponent } from './pages/products-page/product-card/product-card.component';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { TextInputComponent } from './shared/inputs/text-input/text-input.component';
 import { TextareaInputComponent } from './shared/inputs/textarea-input/textarea-input.component';
@@ -17,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingScreenComponent } from './shared/loading-screen/loading-screen.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
+import { ProductsListComponent } from './pages/products-page/products-list/products-list.component';
 
 @NgModule({
   declarations: [
@@ -26,11 +26,11 @@ import { RegistrationComponent } from './pages/registration/registration.compone
     ProductsPageComponent,
     ProductDetailsComponent,
     AddProductModalComponent,
-    ProductCardComponent,
     TextInputComponent,
     TextareaInputComponent,
     LoadingScreenComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    ProductsListComponent
   ],
   imports: [
     HttpClientModule,

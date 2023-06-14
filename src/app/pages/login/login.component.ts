@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { first } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
@@ -10,8 +11,8 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class LoginComponent implements OnInit {
     
-    form!: FormGroup;
-    submitted: boolean = false;
+    public form!: FormGroup;
+    public submitted: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -31,8 +32,11 @@ export class LoginComponent implements OnInit {
             this.submitted = true;
             return;
         }
-        console.log(this.form.value);
-        this.authService.isLoggedInSubject.next(true);
-        this.router.navigate(['/products']);
+        const body = this.form.getRawValue();
+        this.authService.login(body).pipe(first()).subscribe(data => {
+            this.authService.manageLocalStorage(data);
+            this.authService.isLoggedInSubject.next(true);
+            this.router.navigate(['/products']);
+        });
     }
 }

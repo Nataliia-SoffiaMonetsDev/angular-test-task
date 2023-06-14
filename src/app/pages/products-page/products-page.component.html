@@ -1,7 +1,11 @@
 <app-loading-screen *ngIf="loading"></app-loading-screen>
 <div *ngIf="!loading" class="container mt-5 d-flex flex-column justify-content-center">
     <h1 class="m-auto">Existing products</h1>
-    <app-product-card [products]="products" (onProductDelete)="deleteProduct($event)"></app-product-card>
+    <app-products-list
+        [products]="products"
+        (onProductDelete)="deleteProduct($event)"
+        (onProductUpdate)="onUpdateProducts($event)">
+    </app-products-list>
     <div class="col-lg-3 col-md-6 col-sm-8 m-auto mb-4">
         <button type="button" class="btn btn-primary col-12" (click)="openProductModal()">Add product</button>
     </div>

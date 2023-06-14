@@ -29,7 +29,8 @@ export class AddProductModalComponent implements OnInit {
     ngOnInit(): void {
         this.form = this.formBuilder.group({
             productName: this.formBuilder.control(null, { validators: Validators.required }),
-            productDescription: this.formBuilder.control(null, { validators: Validators.required })
+            productDescription: this.formBuilder.control(null, { validators: Validators.required }),
+            productId: this.formBuilder.control(null),
         });
     }
 
@@ -40,6 +41,7 @@ export class AddProductModalComponent implements OnInit {
     public openEditModal(productDeatils: any): void {
         this.f['productName'].setValue(productDeatils.name);
         this.f['productDescription'].setValue(productDeatils.description);
+        this.f['productId'].setValue(productDeatils._id);
         this.modalRef = this.modalService.show(this.elementRef);
     }
 
@@ -52,12 +54,11 @@ export class AddProductModalComponent implements OnInit {
     public addProduct(): void {
         if (!this.form.valid) {
             this.submitted = true;
-            console.log(this.f['productName'].errors)
-            console.log(this.f['productDescription'].errors)
             return;
         }
         this.onAddProduct.emit(this.getFormValue());
         this.modalRef.hide();
+        this.form.reset();
     }
 
     public editProduct(): void {
@@ -66,6 +67,7 @@ export class AddProductModalComponent implements OnInit {
         }
         this.onEditProduct.emit(this.getFormValue());
         this.modalRef.hide();
+        this.form.reset();
     }
 
     private getFormValue(): any {

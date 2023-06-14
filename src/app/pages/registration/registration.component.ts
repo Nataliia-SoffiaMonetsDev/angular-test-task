@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MustMatch } from '../../shared/_validators/must-match.validator';
+import { AuthService } from 'src/app/_services/auth.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-registration',
@@ -9,12 +11,15 @@ import { MustMatch } from '../../shared/_validators/must-match.validator';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
-    form!: FormGroup;
-    submitted: boolean = false;
+
+    public form!: FormGroup;
+    public submitted: boolean = false;
+    public get f() { return this.form.controls; };
 
     constructor(
         private formBuilder: FormBuilder,
-        private router: Router
+        private router: Router,
+        private authService: AuthService
     ) { }
 
     ngOnInit(): void {
@@ -34,12 +39,16 @@ export class RegistrationComponent implements OnInit {
         });
     }
 
-    public onSubmit(): void {
+    public register(): void {
         if (!this.form.valid) {
             this.submitted = true;
             return;
         }
-        console.log(this.form.value);
+        const body = {
+            email: this.f['email'].value,
+            password: this.f['password'].value
+        };
+        this.authService.register(body).pipe(first()).subscribe();
         this.router.navigate(['/login']);
     }
 }

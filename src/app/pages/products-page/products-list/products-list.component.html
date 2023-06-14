@@ -1,0 +1,31 @@
+<div class="col-12 p-5">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col-1">#</th>
+                <th scope="col-3">Name</th>
+                <th scope="col-3">Description</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr *ngFor="let item of products; let i = index;">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ item.name }}</td>
+                <td>
+                    <div class="product-description">{{ item.description }}</div>
+                </td>
+                <td class="d-flex justify-content-end align-items-center">
+                    <button type="button" class="btn btn-info m-2" (click)="navigateToProductDetails(item._id)">Product
+                        details</button>
+                    <button type="button" class="btn btn-warning m-2" (click)="openEditModal(item)">Edit
+                        product</button>
+                    <button type="button" class="btn-close m-2" aria-label="Close"
+                        (click)="deleteProduct(item._id)"></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<app-add-product-modal #editProductModalComponent [isEditMode]="true" (onEditProduct)="editProduct($event)">
+</app-add-product-modal>

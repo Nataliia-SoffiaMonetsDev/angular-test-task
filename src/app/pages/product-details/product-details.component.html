@@ -1,1 +1,17 @@
-<p>product-details works!</p>
+<app-loading-screen *ngIf="loading"></app-loading-screen>
+<div *ngIf="!loading" class="container mt-5 d-flex flex-column justify-content-center">
+    <a class="link-opacity-75-hover d-flex align-items-center text-decoration-none back-link" [routerLink]="['/products']">
+        <span class="material-symbols-outlined">
+            keyboard_backspace
+        </span>
+        Go to all products</a>
+    <div class="card text-center col-10 col-lg-6 m-auto mt-3">
+        <div class="card-header">
+            <h5 class="card-title">{{ product.name }}</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ product.description }}</p>
+        </div>
+        <div class="card-footer text-body-secondary"></div>
+    </div>
+</div>
