@@ -5,13 +5,21 @@
             keyboard_backspace
         </span>
         Go to all products</a>
-    <div class="card text-center col-10 col-lg-6 m-auto mt-3">
+    <div class="card text-center col-10 col-lg-6 m-auto mt-5">
         <div class="card-header">
             <h5 class="card-title">{{ product.name }}</h5>
         </div>
         <div class="card-body">
             <p class="card-text">{{ product.description }}</p>
         </div>
-        <div class="card-footer text-body-secondary"></div>
+        <div class="card-footer text-body-secondary">
+            <div class="col-12 d-flex justify-content-around flex-column flex-lg-row">
+                <button type="button" class="btn btn-danger" (click)="deleteProduct(product._id)">Delete product</button>
+                <button type="button" class="btn btn-warning mt-2 mt-lg-0" (click)="openEditModal(product)">Edit product</button>
+            </div>
+        </div>
     </div>
 </div>
+
+<app-add-product-modal #editProductModalComponent [isEditMode]="true" (onEditProduct)="editProduct($event)">
+</app-add-product-modal>

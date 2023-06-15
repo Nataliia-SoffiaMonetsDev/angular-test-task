@@ -10,11 +10,11 @@ export abstract class BaseInputDirective {
     @Input() form!: FormGroup;
     @Input() submitted: boolean = false;
 
-    get f() {
+    public get f() {
         return this.form.get(this.controlName);
     }
 
-    get fieldId(): string {
+    public get fieldId(): string {
         return `${this.controlNamePrefix}_${this.controlName}`;
     }
 

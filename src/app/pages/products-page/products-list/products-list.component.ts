@@ -10,6 +10,7 @@ import { first } from 'rxjs';
   styleUrls: ['./products-list.component.scss']
 })
 export class ProductsListComponent implements OnInit {
+    
     @Input() products: any[] = [];
     @Output() onProductDelete = new EventEmitter();
     @Output() onProductUpdate = new EventEmitter();

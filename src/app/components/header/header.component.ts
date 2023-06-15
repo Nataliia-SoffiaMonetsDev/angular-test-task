@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-    isLoggedIn$!: Observable<boolean>;
+    public isLoggedIn$!: Observable<boolean>;
 
     constructor(
         private router: Router,
@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
     public logOut(): void {
         this.authService.logout().pipe(first()).subscribe(() => {
             this.authService.isLoggedInSubject.next(false);
-            this.authService.manageLocalStorage();
+            this.authService.manageSessionStorage();
             this.router.navigate(['/login']);
         });
     }

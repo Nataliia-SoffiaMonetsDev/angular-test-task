@@ -13,7 +13,7 @@ export class AuthService {
 
     constructor(private http: HttpClient) {
         this.resourceUrl = 'http://localhost:5000/auth/';
-        this.isLoggedInSubject.next(!!localStorage.getItem('user'));
+        this.isLoggedInSubject.next(this.isLoggedIn());
     }
 
     public register(body: any): Observable<any> {
@@ -28,7 +28,11 @@ export class AuthService {
         return this.http.post<any>(`${this.resourceUrl}/logout`, {});
     }
 
-    public manageLocalStorage(data?: any): void {
-        data ? localStorage.setItem('user', JSON.stringify(data)) : localStorage.removeItem('user');
+    public manageSessionStorage(data?: any): void {
+        data ? sessionStorage.setItem('user', JSON.stringify(data)) : sessionStorage.removeItem('user');
+    }
+
+    public isLoggedIn(): boolean {
+        return !!sessionStorage.getItem('user');
     }
 }

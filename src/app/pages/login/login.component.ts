@@ -25,6 +25,9 @@ export class LoginComponent implements OnInit {
             email: this.formBuilder.control(null, { validators: [Validators.required, Validators.email] }),
             password: this.formBuilder.control(null, { validators: Validators.required })
         });
+        if (this.authService.isLoggedIn()) {
+            this.router.navigate(['/products']);
+        }
     }
 
     public logIn(): void {
@@ -34,7 +37,7 @@ export class LoginComponent implements OnInit {
         }
         const body = this.form.getRawValue();
         this.authService.login(body).pipe(first()).subscribe(data => {
-            this.authService.manageLocalStorage(data);
+            this.authService.manageSessionStorage(data);
             this.authService.isLoggedInSubject.next(true);
             this.router.navigate(['/products']);
         });

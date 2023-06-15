@@ -37,6 +37,9 @@ export class RegistrationComponent implements OnInit {
                 )
             ]
         });
+        if (this.authService.isLoggedIn()) {
+            this.router.navigate(['/products']);
+        }
     }
 
     public register(): void {
@@ -48,7 +51,8 @@ export class RegistrationComponent implements OnInit {
             email: this.f['email'].value,
             password: this.f['password'].value
         };
-        this.authService.register(body).pipe(first()).subscribe();
-        this.router.navigate(['/login']);
+        this.authService.register(body).pipe(first()).subscribe(() => {
+            this.router.navigate(['/login']);
+        });
     }
 }

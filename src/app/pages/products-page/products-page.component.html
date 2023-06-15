@@ -7,7 +7,7 @@
         (onProductUpdate)="onUpdateProducts($event)">
     </app-products-list>
     <div class="col-lg-3 col-md-6 col-sm-8 m-auto mb-4">
-        <button type="button" class="btn btn-primary col-12" (click)="openProductModal()">Add product</button>
+        <button type="button" class="btn btn-primary col-12" (click)="openProductModal()" [disabled]="products.length > 8">Add product</button>
     </div>
 </div>
 

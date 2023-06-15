@@ -17,7 +17,7 @@ export class AddProductModalComponent implements OnInit {
     @Output() onAddProduct = new EventEmitter();
     @Output() onEditProduct = new EventEmitter();
 
-    get f() {
+    public get f() {
         return this.form.controls;
     }
 
