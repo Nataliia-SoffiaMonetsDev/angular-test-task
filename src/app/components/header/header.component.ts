@@ -1,16 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, first } from 'rxjs';
+import { first } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth.service';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 
 @Component({
+    standalone: true,
     selector: 'app-header',
     templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss']
+    styleUrls: ['./header.component.scss'],
+    imports: [
+        CommonModule,
+        AppRoutingModule
+    ]
 })
 export class HeaderComponent implements OnInit {
-
-    public isLoggedIn$!: Observable<boolean>;
+    
+    public isLoggedIn: any;
 
     constructor(
         private router: Router,
@@ -18,12 +25,14 @@ export class HeaderComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.isLoggedIn$ = this.authService.isLoggedIn$;
+        this.isLoggedIn = computed(() => {
+            return this.authService.isUserLoggedIn();
+        })
     }
 
     public logOut(): void {
         this.authService.logout().pipe(first()).subscribe(() => {
-            this.authService.isLoggedInSubject.next(false);
+            this.authService.isUserLoggedIn.set(false);
             this.authService.manageSessionStorage();
             this.router.navigate(['/login']);
         });

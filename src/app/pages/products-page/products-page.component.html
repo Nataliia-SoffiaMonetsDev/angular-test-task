@@ -1,5 +1,5 @@
-<app-loading-screen *ngIf="loading"></app-loading-screen>
-<div *ngIf="!loading" class="container mt-5 d-flex flex-column justify-content-center">
+<app-loading-screen *ngIf="loading()"></app-loading-screen>
+<div *ngIf="!loading()" class="container mt-5 d-flex flex-column justify-content-center">
     <h1 class="m-auto">Existing products</h1>
     <app-products-list
         [products]="products"
@@ -7,9 +7,9 @@
         (onProductUpdate)="onUpdateProducts($event)">
     </app-products-list>
     <div class="col-lg-3 col-md-6 col-sm-8 m-auto mb-4">
-        <button type="button" class="btn btn-primary col-12" (click)="openProductModal()" [disabled]="products.length > 8">Add product</button>
+        <button type="button" class="btn btn-primary col-12" (click)="openProductModal()" [disabled]="products.length > 11">Add product</button>
     </div>
 </div>
 
-<app-add-product-modal #addProductModalComponent (onAddProduct)="addProduct($event)">
-</app-add-product-modal>
+<app-product-modal #addProductModalComponent [error]="error" (onAddProduct)="addProduct($event)">
+</app-product-modal>

@@ -1,21 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs';
+import { catchError, first, throwError } from 'rxjs';
 import { ProductService } from 'src/app/_services/product.service';
-import { AddProductModalComponent } from '../products-page/add-product-modal/add-product-modal.component';
+import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
 
 @Component({
-  selector: 'app-product-details',
-  templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.scss']
+    selector: 'app-product-details',
+    templateUrl: './product-details.component.html',
+    styleUrls: ['./product-details.component.scss']
 })
 export class ProductDetailsComponent implements OnInit {
 
     public product: any;
-    public loading: boolean = false;
+    public loading = signal<boolean>(false);
+    public error!: string;
     private productId!: string;
 
-    @ViewChild('editProductModalComponent') editProductModalComponent!: AddProductModalComponent;
+    @ViewChild('editProductModalComponent') editProductModalComponent!: ProductModalComponent;
 
     constructor(
         private producService: ProductService,
@@ -24,7 +25,7 @@ export class ProductDetailsComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.loading = true;
+        this.loading.set(true);
         this.route.params.subscribe((params: any) => {
             this.productId = params['id'] ? params['id'] : null;
         });
@@ -42,20 +43,35 @@ export class ProductDetailsComponent implements OnInit {
     }
 
     public editProduct(product: any) {
-        const body = {
-            name: product.productName,
-            description: product.productDescription,
-            _id: product.productId
-        };
-        this.producService.updateProduct(body).pipe(first()).subscribe(data => {
-            this.product = data.find((product: any) => product._id === this.productId);
-        });
+        const isProductEdited = !(product.productName === this.product.name && product.productDescription === this.product.description);
+        if (isProductEdited) {
+            const body = {
+                name: product.productName,
+                description: product.productDescription,
+                _id: product.productId
+            };
+            this.producService.updateProduct(body).pipe(
+                first(),
+                catchError(error => {
+                    this.error = error.error;
+                    return throwError(error);
+                })
+            ).subscribe(data => {
+                this.product = data.find((product: any) => product._id === this.productId);
+            });
+        }
     }
 
     private getProduct(): void {
-        this.producService.getProduct(this.productId).pipe(first()).subscribe(data => {
+        this.producService.getProduct(this.productId).pipe(
+            first(),
+            catchError(error => {
+                this.error = error.error;
+                return throwError(error);
+            })
+        ).subscribe(data => {
             this.product = data;
-            this.loading = false;
+            this.loading.set(false);
         });
     }
 }

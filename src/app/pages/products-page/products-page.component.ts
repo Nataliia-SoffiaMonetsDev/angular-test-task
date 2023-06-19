@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AddProductModalComponent } from './add-product-modal/add-product-modal.component';
+import { Component, OnInit, ViewChild, signal } from '@angular/core';
+import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
 import { ProductService } from 'src/app/_services/product.service';
-import { first } from 'rxjs';
+import { catchError, first, throwError } from 'rxjs';
 
 @Component({
     selector: 'app-products-page',
@@ -11,16 +11,17 @@ import { first } from 'rxjs';
 export class ProductsPageComponent implements OnInit {
 
     public products: any[] = [];
-    public loading: boolean = false;
+    public loading = signal<boolean>(false);
+    public error!: string;
 
-    @ViewChild('addProductModalComponent') addProductModalComponent!: AddProductModalComponent;
+    @ViewChild('addProductModalComponent') addProductModalComponent!: ProductModalComponent;
 
     constructor(
-        private producService: ProductService
+        private productService: ProductService
     ) { }
 
     ngOnInit(): void {
-        this.loading = true;
+        this.loading.set(true);
         this.getAllProducts();
     }
 
@@ -29,7 +30,13 @@ export class ProductsPageComponent implements OnInit {
     }
 
     public deleteProduct(id: string): void {
-        this.producService.deleteProduct(id).pipe(first()).subscribe(data => {
+        this.productService.deleteProduct(id).pipe(
+            first(),
+            catchError(error => {
+                this.error = error.error;
+                return throwError(error);
+            })
+        ).subscribe(data => {
             this.products = data;
         });
     }
@@ -39,7 +46,13 @@ export class ProductsPageComponent implements OnInit {
             name: productInfo.productName,
             description: productInfo.productDescription
         };
-        this.producService.createProduct(body).pipe(first()).subscribe(data => {
+        this.productService.createProduct(body).pipe(
+            first(),
+            catchError(error => {
+                this.error = error.error;
+                return throwError(error);
+            })
+        ).subscribe(data => {
             this.products.push(data);
         });
     }
@@ -49,9 +62,15 @@ export class ProductsPageComponent implements OnInit {
     }
 
     private getAllProducts(): void {
-        this.producService.getAllProducts().pipe(first()).subscribe(data => {
+        this.productService.getAllProducts().pipe(
+            first(),
+            catchError(error => {
+                this.error = error.error;
+                return throwError(error);
+            })
+        ).subscribe(data => {
             this.products = data;
-            this.loading = false;
+            this.loading.set(false);
         });
     }
 }

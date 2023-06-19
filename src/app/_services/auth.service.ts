@@ -1,19 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 
-    public isLoggedInSubject = new BehaviorSubject<boolean>(false);
-    public isLoggedIn$ = this.isLoggedInSubject.asObservable();
-    private resourceUrl!: string;
+    private resourceUrl: string = 'http://localhost:5000/auth';
+    public isUserLoggedIn = signal<boolean>(false);
 
     constructor(private http: HttpClient) {
-        this.resourceUrl = 'http://localhost:5000/auth/';
-        this.isLoggedInSubject.next(this.isLoggedIn());
+        this.isUserLoggedIn.set(this.isLoggedIn());
     }
 
     public register(body: any): Observable<any> {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first } from 'rxjs';
+import { catchError, first, throwError } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
     
     public form!: FormGroup;
     public submitted: boolean = false;
+    public error!: string;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -36,9 +37,15 @@ export class LoginComponent implements OnInit {
             return;
         }
         const body = this.form.getRawValue();
-        this.authService.login(body).pipe(first()).subscribe(data => {
+        this.authService.login(body).pipe(
+            first(),
+            catchError(error => {
+                this.error = error.error;
+                return throwError(error);
+            })
+        ).subscribe(data => {
             this.authService.manageSessionStorage(data);
-            this.authService.isLoggedInSubject.next(true);
+            this.authService.isUserLoggedIn.set(true);
             this.router.navigate(['/products']);
         });
     }

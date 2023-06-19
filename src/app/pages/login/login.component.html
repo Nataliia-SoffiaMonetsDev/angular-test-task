@@ -22,6 +22,9 @@
                     [submitted]="submitted">
                 </app-text-input>
             </div>
+            <div *ngIf="error" class="alert alert-danger col-12" role="alert">
+                {{ error }}
+            </div>
             <div class="col-lg-5 col-8 m-auto my-3 align-self-start">
                 <button type="button" class="btn btn-primary col-12" (click)="logIn()">Log in</button>
             </div>

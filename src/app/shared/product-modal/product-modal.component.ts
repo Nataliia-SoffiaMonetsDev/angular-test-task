@@ -1,18 +1,30 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { TextInputComponent } from 'src/app/shared/inputs/text-input/text-input.component';
+import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/textarea-input.component';
 
 @Component({
-    selector: 'app-add-product-modal',
-    templateUrl: './add-product-modal.component.html',
-    styleUrls: ['./add-product-modal.component.scss']
+    standalone: true,
+    selector: 'app-product-modal',
+    templateUrl: './product-modal.component.html',
+    styleUrls: ['./product-modal.component.scss'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TextInputComponent,
+        TextareaInputComponent,
+    ]
 })
-export class AddProductModalComponent implements OnInit {
+export class ProductModalComponent implements OnInit {
 
     public modalRef!: BsModalRef;
     public form!: FormGroup;
     public submitted: boolean = false;
     @Input() isEditMode: boolean = false;
+    @Input() error!: string;
     @ViewChild('template') elementRef!: TemplateRef<any>;
     @Output() onAddProduct = new EventEmitter();
     @Output() onEditProduct = new EventEmitter();
@@ -63,6 +75,7 @@ export class AddProductModalComponent implements OnInit {
 
     public editProduct(): void {
         if (!this.form.valid) {
+            this.submitted = true;
             return;
         }
         this.onEditProduct.emit(this.getFormValue());

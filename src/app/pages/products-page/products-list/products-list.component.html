@@ -14,5 +14,5 @@
     </div>
 </div>
 
-<app-add-product-modal #editProductModalComponent [isEditMode]="true" (onEditProduct)="editProduct($event)">
-</app-add-product-modal>
+<app-product-modal #editProductModalComponent [isEditMode]="true" [error]="error" (onEditProduct)="editProduct($event)">
+</app-product-modal>

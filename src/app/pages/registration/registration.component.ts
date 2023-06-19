@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MustMatch } from '../../shared/_validators/must-match.validator';
 import { AuthService } from 'src/app/_services/auth.service';
-import { first } from 'rxjs';
+import { catchError, first, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-registration',
@@ -14,6 +14,7 @@ export class RegistrationComponent implements OnInit {
 
     public form!: FormGroup;
     public submitted: boolean = false;
+    public error!: string;
     public get f() { return this.form.controls; };
 
     constructor(
@@ -51,7 +52,14 @@ export class RegistrationComponent implements OnInit {
             email: this.f['email'].value,
             password: this.f['password'].value
         };
-        this.authService.register(body).pipe(first()).subscribe(() => {
+        this.authService.register(body).pipe(
+            first(),
+            catchError(error => {
+                this.error = error.error;
+                console.log(error)
+                return throwError(error);
+            })
+        ).subscribe(() => {
             this.router.navigate(['/login']);
         });
     }

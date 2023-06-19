@@ -7,10 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
-    private resourceUrl!: string;
+    private resourceUrl: string = 'http://localhost:5000/';
 
     constructor(private http: HttpClient) {
-        this.resourceUrl = 'http://localhost:5000/';
     }
 
     public createProduct(body: any): Observable<any> {

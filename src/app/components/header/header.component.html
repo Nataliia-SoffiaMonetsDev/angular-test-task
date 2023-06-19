@@ -4,11 +4,11 @@
             <span class="material-symbols-outlined">
                 list_alt_add
             </span>
-            <a class="navbar-brand" href="#">Products list</a>
+            <p class="navbar-brand m-0">Products list</p>
         </div>
         <div>
             <ul class="nav nav-underline">
-                <ng-container *ngIf="!(isLoggedIn$ | async)">
+                <ng-container *ngIf="!isLoggedIn()">
                     <li class="nav-item">
                         <a class="nav-link" routerLinkActive="active" [routerLink]="['/registration']">Register</a>
                     </li>
@@ -16,7 +16,7 @@
                         <a class="nav-link" routerLinkActive="active" [routerLink]="['/login']">Login</a>
                     </li>
                 </ng-container>
-                <li *ngIf="(isLoggedIn$ | async)" class="nav-item">
+                <li *ngIf="isLoggedIn()" class="nav-item">
                     <a class="nav-link" (click)="logOut()">Logout</a>
                 </li>
             </ul>

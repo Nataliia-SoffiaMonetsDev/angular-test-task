@@ -25,6 +25,9 @@
                     </app-textarea-input>
                 </div>
             </form>
+            <div *ngIf="error" class="alert alert-danger col-12" role="alert">
+                {{ error }}
+            </div>
         </div>
     </div>
     <div class="modal-footer">
