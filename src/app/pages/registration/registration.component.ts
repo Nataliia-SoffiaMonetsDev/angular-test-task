@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MustMatch } from '../../shared/_validators/must-match.validator';
+import { MustMatch } from '../../_validators/must-match.validator';
 import { AuthService } from 'src/app/_services/auth.service';
 import { catchError, first, throwError } from 'rxjs';
+import { RegisterForm } from 'src/app/shared/interfaces/forms.interfaces';
+import { UserData } from 'src/app/shared/interfaces/data.interfaces';
 
 @Component({
   selector: 'app-registration',
@@ -12,9 +14,9 @@ import { catchError, first, throwError } from 'rxjs';
 })
 export class RegistrationComponent implements OnInit {
 
-    public form!: FormGroup;
+    public form: FormGroup;
     public submitted: boolean = false;
-    public error!: string;
+    public error: string;
     public get f() { return this.form.controls; };
 
     constructor(
@@ -24,10 +26,10 @@ export class RegistrationComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.form = this.formBuilder.group({
+        this.form = this.formBuilder.group<RegisterForm>({
             email: this.formBuilder.control(null, { validators: [Validators.required, Validators.email] }),
-            password: this.formBuilder.control(null, { validators: Validators.required }),
-            confirmPassword: this.formBuilder.control(null, { validators: Validators.required }),
+            password: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(6), Validators.maxLength(10)] }),
+            confirmPassword: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(6), Validators.maxLength(10)] }),
         },
         {
             validators: [
@@ -48,16 +50,15 @@ export class RegistrationComponent implements OnInit {
             this.submitted = true;
             return;
         }
-        const body = {
+        const body: UserData = {
             email: this.f['email'].value,
             password: this.f['password'].value
         };
         this.authService.register(body).pipe(
             first(),
-            catchError(error => {
-                this.error = error.error;
-                console.log(error)
-                return throwError(error);
+            catchError(e => {
+                this.error = e.error.message;
+                return throwError(e);
             })
         ).subscribe(() => {
             this.router.navigate(['/login']);

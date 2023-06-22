@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TextInputComponent } from 'src/app/shared/inputs/text-input/text-input.component';
 import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/textarea-input.component';
+import { ProductForm } from '../interfaces/forms.interfaces';
+import { ProductData } from '../interfaces/data.interfaces';
 
 @Component({
     standalone: true,
@@ -20,12 +22,12 @@ import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/tex
 })
 export class ProductModalComponent implements OnInit {
 
-    public modalRef!: BsModalRef;
-    public form!: FormGroup;
+    public modalRef: BsModalRef;
+    public form: FormGroup;
     public submitted: boolean = false;
     @Input() isEditMode: boolean = false;
-    @Input() error!: string;
-    @ViewChild('template') elementRef!: TemplateRef<any>;
+    @Input() error: string;
+    @ViewChild('template') elementRef: TemplateRef<Element>;
     @Output() onAddProduct = new EventEmitter();
     @Output() onEditProduct = new EventEmitter();
 
@@ -39,7 +41,7 @@ export class ProductModalComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.form = this.formBuilder.group({
+        this.form = this.formBuilder.group<ProductForm>({
             productName: this.formBuilder.control(null, { validators: Validators.required }),
             productDescription: this.formBuilder.control(null, { validators: Validators.required }),
             productId: this.formBuilder.control(null),
@@ -50,7 +52,7 @@ export class ProductModalComponent implements OnInit {
         this.modalRef = this.modalService.show(this.elementRef);
     }
 
-    public openEditModal(productDeatils: any): void {
+    public openEditModal(productDeatils: ProductData): void {
         this.f['productName'].setValue(productDeatils.name);
         this.f['productDescription'].setValue(productDeatils.description);
         this.f['productId'].setValue(productDeatils._id);
@@ -61,6 +63,8 @@ export class ProductModalComponent implements OnInit {
         if (this.modalRef) {
             this.modalRef.hide();
         }
+        this.form.reset();
+        this.error = '';
     }
 
     public addProduct(): void {
@@ -69,8 +73,6 @@ export class ProductModalComponent implements OnInit {
             return;
         }
         this.onAddProduct.emit(this.getFormValue());
-        this.modalRef.hide();
-        this.form.reset();
     }
 
     public editProduct(): void {
@@ -79,12 +81,14 @@ export class ProductModalComponent implements OnInit {
             return;
         }
         this.onEditProduct.emit(this.getFormValue());
-        this.modalRef.hide();
-        this.form.reset();
     }
 
-    private getFormValue(): any {
-        const product = this.form.getRawValue();
+    private getFormValue(): ProductData {
+        const product: ProductData = {
+            name: this.f['productName'].value,
+            description: this.f['productDescription'].value,
+            _id: this.f['productId'].value
+        };
         return product;
     }
 

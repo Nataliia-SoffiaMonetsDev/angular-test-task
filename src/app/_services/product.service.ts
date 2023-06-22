@@ -1,34 +1,36 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ProductData } from '../shared/interfaces/data.interfaces';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProductService {
 
-    private resourceUrl: string = 'http://localhost:5000/';
+    private resourceUrl: string = environment.apiUrl;
 
     constructor(private http: HttpClient) {
     }
 
-    public createProduct(body: any): Observable<any> {
-        return this.http.post<any>(`${this.resourceUrl}products`, body);
+    public createProduct(body: ProductData): Observable<ProductData> {
+        return this.http.post<ProductData>(`${this.resourceUrl}/products`, body);
     }
 
-    public getAllProducts(): Observable<any> {
-        return this.http.get<any>(`${this.resourceUrl}products`);
+    public getAllProducts(): Observable<ProductData[]> {
+        return this.http.get<ProductData[]>(`${this.resourceUrl}/products`);
     }
 
-    public getProduct(id: string): Observable<any> {
-        return this.http.get<any>(`${this.resourceUrl}products/${id}`);
+    public getProduct(id: string): Observable<ProductData> {
+        return this.http.get<ProductData>(`${this.resourceUrl}/products/${id}`);
     }
 
-    public updateProduct(body: any): Observable<any> {
-        return this.http.put<any>(`${this.resourceUrl}products`, body);
+    public updateProduct(body: ProductData): Observable<ProductData[]> {
+        return this.http.put<ProductData[]>(`${this.resourceUrl}/products`, body);
     }
 
-    public deleteProduct(id: string): Observable<any> {
-        return this.http.delete<any>(`${this.resourceUrl}products/${id}`);
+    public deleteProduct(id: string): Observable<ProductData[]> {
+        return this.http.delete<ProductData[]>(`${this.resourceUrl}/products/${id}`);
     }
 }

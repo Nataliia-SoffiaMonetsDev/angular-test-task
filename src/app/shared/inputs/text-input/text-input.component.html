@@ -18,7 +18,7 @@
     </div>
     <div *ngIf="f?.errors && submitted" class="invalid-feedback">
         <div *ngFor="let error of f?.errors | keyvalue">
-            {{ getErrorMessage(error.key) }}
+            {{ getErrorMessage(error.key, error) }}
         </div>
     </div>
 </div>

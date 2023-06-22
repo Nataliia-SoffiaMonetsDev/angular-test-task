@@ -4,6 +4,7 @@ import { ProductModalComponent } from '../../../shared/product-modal/product-mod
 import { ProductService } from 'src/app/_services/product.service';
 import { catchError, first, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
 
 @Component({
     standalone: true,
@@ -17,12 +18,12 @@ import { CommonModule } from '@angular/common';
 })
 export class ProductsListComponent implements OnInit {
 
-    @Input() products: any[] = [];
+    @Input() products: ProductData[] = [];
     @Output() onProductDelete = new EventEmitter();
     @Output() onProductUpdate = new EventEmitter();
-    @ViewChild('editProductModalComponent') editProductModalComponent!: ProductModalComponent;
+    @ViewChild('editProductModalComponent') editProductModalComponent: ProductModalComponent;
 
-    public error!: string;
+    public error: string;
 
     constructor(
         private router: Router,
@@ -32,35 +33,31 @@ export class ProductsListComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    public deleteProduct(id: number): void {
+    public deleteProduct(id: string): void {
         this.onProductDelete.emit(id);
     }
 
-    public navigateToProductDetails(id: number): void {
+    public navigateToProductDetails(id: string): void {
         this.router.navigate([`/product-details/${id}`]);
     }
 
-    public openEditModal(product: any) {
+    public openEditModal(product: ProductData) {
         this.editProductModalComponent.openEditModal(product);
     }
 
-    public editProduct(product: any) {
-        const existingProduct = this.products.find((prod: any) => prod._id === product.productId);
-        const isProductEdited = !(product.productName === existingProduct.name && product.productDescription === existingProduct.description);
+    public editProduct(product: ProductData) {
+        const existingProduct: ProductData = this.products.find((prod: any) => prod._id === product._id);
+        const isProductEdited: boolean = !(product.name === existingProduct.name && product.description === existingProduct.description);
         if (isProductEdited) {
-            const body = {
-                name: product.productName,
-                description: product.productDescription,
-                _id: product.productId
-            };
-            this.producService.updateProduct(body).pipe(
+            this.producService.updateProduct(product).pipe(
                 first(),
-                catchError(error => {
-                    this.error = error.error;
-                    return throwError(error);
+                catchError(e => {
+                    this.error = e.error.message;
+                    return throwError(e);
                 })
-            ).subscribe(data => {
+            ).subscribe((data: ProductData[]) => {
                 this.onProductUpdate.emit(data);
+                this.editProductModalComponent.hideModal();
             });
         }
     }

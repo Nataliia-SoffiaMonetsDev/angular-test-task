@@ -1,7 +1,7 @@
 <ng-template #template>
     <div class="modal-header">
         <h4 class="modal-title pull-left">{{ isEditMode ? 'Edit product' : 'Add product' }}</h4>
-        <button type="button" class="btn-close pull-right" aria-label="Close" (click)="modalRef.hide()"></button>
+        <button type="button" class="btn-close pull-right" aria-label="Close" (click)="hideModal()"></button>
     </div>
     <div class="modal-body">
         <div class="mb-3">

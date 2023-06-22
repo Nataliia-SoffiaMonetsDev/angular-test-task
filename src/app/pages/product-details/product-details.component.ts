@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, first, throwError } from 'rxjs';
 import { ProductService } from 'src/app/_services/product.service';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
+import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
 
 @Component({
     selector: 'app-product-details',
@@ -11,12 +12,12 @@ import { ProductModalComponent } from '../../shared/product-modal/product-modal.
 })
 export class ProductDetailsComponent implements OnInit {
 
-    public product: any;
+    public product: ProductData;
     public loading = signal<boolean>(false);
-    public error!: string;
-    private productId!: string;
+    public error: string;
+    private productId: string;
 
-    @ViewChild('editProductModalComponent') editProductModalComponent!: ProductModalComponent;
+    @ViewChild('editProductModalComponent') editProductModalComponent: ProductModalComponent;
 
     constructor(
         private producService: ProductService,
@@ -32,32 +33,28 @@ export class ProductDetailsComponent implements OnInit {
         this.getProduct();
     }
 
-    public openEditModal(product: any) {
+    public openEditModal(product: ProductData) {
         this.editProductModalComponent.openEditModal(product);
     }
 
     public deleteProduct(id: string): void {
-        this.producService.deleteProduct(id).pipe(first()).subscribe(data => {
+        this.producService.deleteProduct(id).pipe(first()).subscribe(() => {
             this.router.navigate(['/products']);
         });
     }
 
-    public editProduct(product: any) {
-        const isProductEdited = !(product.productName === this.product.name && product.productDescription === this.product.description);
+    public editProduct(product: ProductData) {
+        const isProductEdited: boolean = !(product.name === this.product?.name && product.description === this.product?.description);
         if (isProductEdited) {
-            const body = {
-                name: product.productName,
-                description: product.productDescription,
-                _id: product.productId
-            };
-            this.producService.updateProduct(body).pipe(
+            this.producService.updateProduct(product).pipe(
                 first(),
-                catchError(error => {
-                    this.error = error.error;
-                    return throwError(error);
+                catchError(e => {
+                    this.error = e.error.message;
+                    return throwError(e);
                 })
-            ).subscribe(data => {
+            ).subscribe((data: ProductData[]) => {
                 this.product = data.find((product: any) => product._id === this.productId);
+                this.editProductModalComponent.hideModal();
             });
         }
     }
@@ -65,11 +62,11 @@ export class ProductDetailsComponent implements OnInit {
     private getProduct(): void {
         this.producService.getProduct(this.productId).pipe(
             first(),
-            catchError(error => {
-                this.error = error.error;
-                return throwError(error);
+            catchError(e => {
+                this.error = e.error.message;
+                return throwError(e);
             })
-        ).subscribe(data => {
+        ).subscribe((data: ProductData) => {
             this.product = data;
             this.loading.set(false);
         });

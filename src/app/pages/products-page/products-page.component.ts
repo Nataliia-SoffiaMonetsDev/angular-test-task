@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, signal } from '@angular/core';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
 import { ProductService } from 'src/app/_services/product.service';
 import { catchError, first, throwError } from 'rxjs';
+import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
 
 @Component({
     selector: 'app-products-page',
@@ -10,11 +11,11 @@ import { catchError, first, throwError } from 'rxjs';
 })
 export class ProductsPageComponent implements OnInit {
 
-    public products: any[] = [];
+    public products: ProductData[] = [];
     public loading = signal<boolean>(false);
-    public error!: string;
+    public error: string;
 
-    @ViewChild('addProductModalComponent') addProductModalComponent!: ProductModalComponent;
+    @ViewChild('addProductModalComponent') addProductModalComponent: ProductModalComponent;
 
     constructor(
         private productService: ProductService
@@ -32,43 +33,44 @@ export class ProductsPageComponent implements OnInit {
     public deleteProduct(id: string): void {
         this.productService.deleteProduct(id).pipe(
             first(),
-            catchError(error => {
-                this.error = error.error;
-                return throwError(error);
+            catchError(e => {
+                this.error = e.error.message;
+                return throwError(e);
             })
-        ).subscribe(data => {
+        ).subscribe((data: ProductData[]) => {
             this.products = data;
         });
     }
 
-    public addProduct(productInfo: any): void {
-        const body = {
-            name: productInfo.productName,
-            description: productInfo.productDescription
+    public addProduct(productInfo: ProductData): void {
+        const body: ProductData = {
+            name: productInfo.name,
+            description: productInfo.description
         };
         this.productService.createProduct(body).pipe(
             first(),
-            catchError(error => {
-                this.error = error.error;
-                return throwError(error);
+            catchError(e => {
+                this.error = e.error.message;
+                return throwError(e);
             })
-        ).subscribe(data => {
+        ).subscribe((data: ProductData) => {
             this.products.push(data);
+            this.addProductModalComponent.hideModal();
         });
     }
 
-    public onUpdateProducts(products: any): void {
+    public onUpdateProducts(products: ProductData[]): void {
         this.products = products;
     }
 
     private getAllProducts(): void {
         this.productService.getAllProducts().pipe(
             first(),
-            catchError(error => {
-                this.error = error.error;
-                return throwError(error);
+            catchError(e => {
+                this.error = e.error.message;
+                return throwError(e);
             })
-        ).subscribe(data => {
+        ).subscribe((data: ProductData[]) => {
             this.products = data;
             this.loading.set(false);
         });

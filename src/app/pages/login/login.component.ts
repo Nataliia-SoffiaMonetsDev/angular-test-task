@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, first, throwError } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth.service';
+import { UserData } from 'src/app/shared/interfaces/data.interfaces';
+import { LoginForm } from 'src/app/shared/interfaces/forms.interfaces';
 
 @Component({
     selector: 'app-login',
@@ -11,9 +13,9 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class LoginComponent implements OnInit {
     
-    public form!: FormGroup;
+    public form: FormGroup;
     public submitted: boolean = false;
-    public error!: string;
+    public error: string;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -22,9 +24,9 @@ export class LoginComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.form = this.formBuilder.group({
+        this.form = this.formBuilder.group<LoginForm>({
             email: this.formBuilder.control(null, { validators: [Validators.required, Validators.email] }),
-            password: this.formBuilder.control(null, { validators: Validators.required })
+            password: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(6), Validators.maxLength(10)] })
         });
         if (this.authService.isLoggedIn()) {
             this.router.navigate(['/products']);
@@ -36,15 +38,15 @@ export class LoginComponent implements OnInit {
             this.submitted = true;
             return;
         }
-        const body = this.form.getRawValue();
+        const body: UserData = this.form.getRawValue();
         this.authService.login(body).pipe(
             first(),
-            catchError(error => {
-                this.error = error.error;
-                return throwError(error);
+            catchError(e => {
+                this.error = e.error.message;
+                return throwError(e);
             })
-        ).subscribe(data => {
-            this.authService.manageSessionStorage(data);
+        ).subscribe((data: UserData) => {
+            this.authService.manageLocalStorage(data);
             this.authService.isUserLoggedIn.set(true);
             this.router.navigate(['/products']);
         });
