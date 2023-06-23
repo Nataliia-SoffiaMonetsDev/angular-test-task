@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+.btn-primary {
+    height: 50px;
+}
+
+app-root {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 58px auto 73px;
+}
+
+main {
+    overflow-y: auto;
+}

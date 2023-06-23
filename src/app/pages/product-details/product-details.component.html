@@ -1,0 +1,30 @@
+<app-loading-screen *ngIf="loading()"></app-loading-screen>
+<div *ngIf="!loading()" class="container mt-5 d-flex flex-column justify-content-center">
+    <a class="link-opacity-75-hover d-flex align-items-center text-decoration-none back-link" [routerLink]="['/products']">
+        <span class="material-symbols-outlined">
+            keyboard_backspace
+        </span>
+        Go to all products</a>
+    <div class="card text-center col-10 col-lg-6 m-auto mt-5">
+        <div class="card-header">
+            <h5 class="card-title">{{ product.name }}</h5>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center">
+            <p class="card-text w-100">{{ product.description }}</p>
+        </div>
+        <div class="card-footer text-body-secondary">
+            <div class="col-12 d-flex justify-content-around flex-column flex-lg-row">
+                <button type="button" class="btn btn-danger" (click)="confirmModalComponent.openModal()">Delete product</button>
+                <button type="button" class="btn btn-warning mt-2 mt-lg-0" (click)="openEditModal(product)">Edit product</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="error" class="alert alert-danger col-10 col-lg-6 m-auto mt-3" role="alert">
+        {{ error }}
+    </div>
+</div>
+
+<app-product-modal #editProductModalComponent [isEditMode]="true" [error]="error" (onEditProduct)="editProduct($event)">
+</app-product-modal>
+
+<app-confirm-modal #confirmModalComponent (onConfirm)="deleteProduct()"></app-confirm-modal>

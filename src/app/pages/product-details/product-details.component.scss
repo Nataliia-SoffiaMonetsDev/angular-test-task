@@ -1,0 +1,11 @@
+.back-link {
+    color: black;
+
+    &:hover {
+        color: #ffc107;
+    }
+}
+
+.card-body {
+    min-height: 200px;
+}

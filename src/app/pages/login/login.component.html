@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row mt-5">
+        <form [formGroup]="form" class="col-lg-6 col-md-8 col-10 m-auto d-flex flex-column align-items-center p-lg-4 p-md-3 p-2">
+            <h1 class="m-auto mb-3">Login</h1>
+            <div class="mb-3 col-12">
+                <app-text-input
+                    label="Email"
+                    controlName="email"
+                    controlNamePrefix="login"
+                    [form]="form"
+                    [submitted]="submitted">
+                </app-text-input>
+            </div>
+            <div class="mb-3 col-12">
+                <app-text-input
+                    label="Password"
+                    controlName="password"
+                    controlNamePrefix="login"
+                    [form]="form"
+                    type="password"
+                    [showIcon]="true"
+                    [submitted]="submitted">
+                </app-text-input>
+            </div>
+            <div *ngIf="error" class="alert alert-danger col-12" role="alert">
+                {{ error }}
+            </div>
+            <div class="col-lg-5 col-8 m-auto my-3 align-self-start">
+                <button type="button" class="btn btn-primary col-12" (click)="logIn()">Log in</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{ isEditMode ? 'Edit product' : 'Add product' }}</h4>
+        <button type="button" class="btn-close pull-right" aria-label="Close" (click)="hideModal()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <form [formGroup]="form">
+                <div class="mb-3">
+                    <app-text-input
+                        label="Name"
+                        controlName="productName"
+                        controlNamePrefix="modal"
+                        [form]="form"
+                        [submitted]="submitted">
+                    </app-text-input>
+                </div>
+                <div class="mb-3">
+                    <app-textarea-input
+                        label="Description"
+                        controlName="productDescription"
+                        controlNamePrefix="modal"
+                        [form]="form"
+                        [submitted]="submitted"
+                        [charLimit]="300">
+                    </app-textarea-input>
+                </div>
+            </form>
+            <div *ngIf="error" class="alert alert-danger col-12" role="alert">
+                {{ error }}
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="isEditMode ? editProduct() : addProduct()">{{ isEditMode ? 'Edit' : 'Add' }}</button>
+    </div>
+</ng-template>

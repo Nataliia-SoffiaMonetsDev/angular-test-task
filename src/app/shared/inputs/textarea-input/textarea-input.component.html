@@ -1,0 +1,14 @@
+<div [formGroup]="form">
+    <label for="fieldId" class="form-label">{{ label }}</label>
+    <textarea class="form-control" id="fieldId" rows="3" [maxlength]="charLimit" [formControlName]="controlName" [ngClass]="{ 'is-invalid': f?.errors && submitted }"></textarea>
+    <div *ngIf="charLimit && f.value" class="mt-2 text-muted">
+        <small>Character limit: {{ f.value.length }}/{{ charLimit }}</small>
+    </div>
+    <div *ngIf="f?.errors && submitted" class="invalid-feedback">
+        <div *ngFor="let error of f?.errors | keyvalue">
+            <div *ngFor="let error of f?.errors | keyvalue">
+                {{ getErrorMessage(error.key, error) }}
+            </div>
+        </div>
+    </div>
+</div>
