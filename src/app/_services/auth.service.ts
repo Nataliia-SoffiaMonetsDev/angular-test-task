@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     public logout(): Observable<any> {
-        return this.http.post<any>(`${this.resourceUrl}/auth/logout`, {});
+        return this.http.post<any>(`${this.resourceUrl}/auth/logout`, {}, { withCredentials: true });
     }
 
     public manageLocalStorage(data?: UserData): void {
