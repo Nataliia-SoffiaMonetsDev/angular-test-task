@@ -63,6 +63,7 @@ export class ProductDetailsComponent implements OnInit {
             ).subscribe((data: ProductData[]) => {
                 this.product = data.find((product: any) => product._id === this.productId);
                 this.editProductModalComponent.hideModal();
+                this.error = '';
             });
         } else {
             this.editProductModalComponent.hideModal();
@@ -79,6 +80,7 @@ export class ProductDetailsComponent implements OnInit {
         ).subscribe((data: ProductData) => {
             this.product = data;
             this.loading.set(false);
+            this.error = '';
         });
     }
 }

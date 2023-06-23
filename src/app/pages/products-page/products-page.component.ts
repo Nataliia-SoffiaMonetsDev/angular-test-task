@@ -39,6 +39,7 @@ export class ProductsPageComponent implements OnInit {
             })
         ).subscribe((data: ProductData[]) => {
             this.products = data;
+            this.error = '';
         });
     }
 
@@ -56,6 +57,7 @@ export class ProductsPageComponent implements OnInit {
         ).subscribe((data: ProductData) => {
             this.products.push(data);
             this.addProductModalComponent.hideModal();
+            this.error = '';
         });
     }
 
@@ -73,6 +75,7 @@ export class ProductsPageComponent implements OnInit {
         ).subscribe((data: ProductData[]) => {
             this.products = data;
             this.loading.set(false);
+            this.error = '';
         });
     }
 }
