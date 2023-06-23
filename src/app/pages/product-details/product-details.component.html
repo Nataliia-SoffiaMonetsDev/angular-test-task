@@ -14,12 +14,17 @@
         </div>
         <div class="card-footer text-body-secondary">
             <div class="col-12 d-flex justify-content-around flex-column flex-lg-row">
-                <button type="button" class="btn btn-danger" (click)="deleteProduct(product._id)">Delete product</button>
+                <button type="button" class="btn btn-danger" (click)="confirmModalComponent.openModal()">Delete product</button>
                 <button type="button" class="btn btn-warning mt-2 mt-lg-0" (click)="openEditModal(product)">Edit product</button>
             </div>
         </div>
+    </div>
+    <div *ngIf="error" class="alert alert-danger col-10 col-lg-6 m-auto mt-3" role="alert">
+        {{ error }}
     </div>
 </div>
 
 <app-product-modal #editProductModalComponent [isEditMode]="true" [error]="error" (onEditProduct)="editProduct($event)">
 </app-product-modal>
+
+<app-confirm-modal #confirmModalComponent (onConfirm)="deleteProduct()"></app-confirm-modal>

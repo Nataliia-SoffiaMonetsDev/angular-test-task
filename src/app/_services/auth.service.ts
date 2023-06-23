@@ -21,7 +21,7 @@ export class AuthService {
     }
 
     public login(body: UserData): Observable<UserData> {
-        return this.http.post<UserData>(`${this.resourceUrl}/auth/login`, body);
+        return this.http.post<UserData>(`${this.resourceUrl}/auth/login`, body, { withCredentials: true });
     }
 
     public logout(): Observable<any> {

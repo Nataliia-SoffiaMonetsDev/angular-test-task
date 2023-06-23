@@ -4,6 +4,7 @@ import { catchError, first, throwError } from 'rxjs';
 import { ProductService } from 'src/app/_services/product.service';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
 import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
+import { ConfirmModalComponent } from 'src/app/shared/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-product-details',
@@ -18,6 +19,7 @@ export class ProductDetailsComponent implements OnInit {
     private productId: string;
 
     @ViewChild('editProductModalComponent') editProductModalComponent: ProductModalComponent;
+    @ViewChild('confirmModalComponent') confirmModalComponent: ConfirmModalComponent;
 
     constructor(
         private producService: ProductService,
@@ -37,8 +39,14 @@ export class ProductDetailsComponent implements OnInit {
         this.editProductModalComponent.openEditModal(product);
     }
 
-    public deleteProduct(id: string): void {
-        this.producService.deleteProduct(id).pipe(first()).subscribe(() => {
+    public deleteProduct(): void {
+        this.producService.deleteProduct(this.productId).pipe(
+            first(),
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
+            })
+        ).subscribe(() => {
             this.router.navigate(['/products']);
         });
     }
@@ -48,23 +56,25 @@ export class ProductDetailsComponent implements OnInit {
         if (isProductEdited) {
             this.producService.updateProduct(product).pipe(
                 first(),
-                catchError(e => {
-                    this.error = e.error.message;
-                    return throwError(e);
+                catchError(error => {
+                    this.error = error;
+                    return throwError(error);
                 })
             ).subscribe((data: ProductData[]) => {
                 this.product = data.find((product: any) => product._id === this.productId);
                 this.editProductModalComponent.hideModal();
             });
+        } else {
+            this.editProductModalComponent.hideModal();
         }
     }
 
     private getProduct(): void {
         this.producService.getProduct(this.productId).pipe(
             first(),
-            catchError(e => {
-                this.error = e.error.message;
-                return throwError(e);
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
             })
         ).subscribe((data: ProductData) => {
             this.product = data;

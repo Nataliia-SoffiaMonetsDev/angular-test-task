@@ -56,9 +56,9 @@ export class RegistrationComponent implements OnInit {
         };
         this.authService.register(body).pipe(
             first(),
-            catchError(e => {
-                this.error = e.error.message;
-                return throwError(e);
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
             })
         ).subscribe(() => {
             this.router.navigate(['/login']);

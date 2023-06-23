@@ -33,9 +33,9 @@ export class ProductsPageComponent implements OnInit {
     public deleteProduct(id: string): void {
         this.productService.deleteProduct(id).pipe(
             first(),
-            catchError(e => {
-                this.error = e.error.message;
-                return throwError(e);
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
             })
         ).subscribe((data: ProductData[]) => {
             this.products = data;
@@ -49,9 +49,9 @@ export class ProductsPageComponent implements OnInit {
         };
         this.productService.createProduct(body).pipe(
             first(),
-            catchError(e => {
-                this.error = e.error.message;
-                return throwError(e);
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
             })
         ).subscribe((data: ProductData) => {
             this.products.push(data);
@@ -66,9 +66,9 @@ export class ProductsPageComponent implements OnInit {
     private getAllProducts(): void {
         this.productService.getAllProducts().pipe(
             first(),
-            catchError(e => {
-                this.error = e.error.message;
-                return throwError(e);
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
             })
         ).subscribe((data: ProductData[]) => {
             this.products = data;

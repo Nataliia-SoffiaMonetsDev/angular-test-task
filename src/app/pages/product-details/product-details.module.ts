@@ -4,6 +4,7 @@ import { ProductDetailsRoutingModule } from './product-details-routing.module';
 import { ProductDetailsComponent } from './product-details.component';
 import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-screen.component';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
+import { ConfirmModalComponent } from 'src/app/shared/confirm-modal/confirm-modal.component';
 
 @NgModule({
     declarations: [
@@ -13,7 +14,8 @@ import { ProductModalComponent } from '../../shared/product-modal/product-modal.
         CommonModule,
         ProductDetailsRoutingModule,
         ProductModalComponent,
-        LoadingScreenComponent
+        LoadingScreenComponent,
+        ConfirmModalComponent
     ]
 })
 export class ProductDetailsModule { }

@@ -5,6 +5,7 @@ import { ProductService } from 'src/app/_services/product.service';
 import { catchError, first, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
+import { ConfirmModalComponent } from 'src/app/shared/confirm-modal/confirm-modal.component';
 
 @Component({
     standalone: true,
@@ -13,7 +14,8 @@ import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
     styleUrls: ['./products-list.component.scss'],
     imports: [
         CommonModule,
-        ProductModalComponent
+        ProductModalComponent,
+        ConfirmModalComponent
     ]
 })
 export class ProductsListComponent implements OnInit {
@@ -22,8 +24,10 @@ export class ProductsListComponent implements OnInit {
     @Output() onProductDelete = new EventEmitter();
     @Output() onProductUpdate = new EventEmitter();
     @ViewChild('editProductModalComponent') editProductModalComponent: ProductModalComponent;
+    @ViewChild('confirmModalComponent') confirmModalComponent: ConfirmModalComponent;
 
     public error: string;
+    public productId: string;
 
     constructor(
         private router: Router,
@@ -34,7 +38,12 @@ export class ProductsListComponent implements OnInit {
     }
 
     public deleteProduct(id: string): void {
-        this.onProductDelete.emit(id);
+        this.productId = id;
+        this.confirmModalComponent.openModal();
+    }
+
+    public onConfirmProductDelete(): void {
+        this.onProductDelete.emit(this.productId);
     }
 
     public navigateToProductDetails(id: string): void {
@@ -51,14 +60,16 @@ export class ProductsListComponent implements OnInit {
         if (isProductEdited) {
             this.producService.updateProduct(product).pipe(
                 first(),
-                catchError(e => {
-                    this.error = e.error.message;
-                    return throwError(e);
+                catchError(error => {
+                    this.error = error;
+                    return throwError(error);
                 })
             ).subscribe((data: ProductData[]) => {
                 this.onProductUpdate.emit(data);
                 this.editProductModalComponent.hideModal();
             });
+        } else {
+            this.editProductModalComponent.hideModal();
         }
     }
 }

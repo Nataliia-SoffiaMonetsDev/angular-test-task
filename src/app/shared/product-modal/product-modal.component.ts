@@ -18,7 +18,8 @@ import { ProductData } from '../interfaces/data.interfaces';
         ReactiveFormsModule,
         TextInputComponent,
         TextareaInputComponent,
-    ]
+    ],
+    providers: [BsModalService]
 })
 export class ProductModalComponent implements OnInit {
 
@@ -42,8 +43,8 @@ export class ProductModalComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = this.formBuilder.group<ProductForm>({
-            productName: this.formBuilder.control(null, { validators: Validators.required }),
-            productDescription: this.formBuilder.control(null, { validators: Validators.required }),
+            productName: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(40)] }),
+            productDescription: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(300)] }),
             productId: this.formBuilder.control(null),
         });
     }
@@ -56,7 +57,7 @@ export class ProductModalComponent implements OnInit {
         this.f['productName'].setValue(productDeatils.name);
         this.f['productDescription'].setValue(productDeatils.description);
         this.f['productId'].setValue(productDeatils._id);
-        this.modalRef = this.modalService.show(this.elementRef);
+        this.openModal();
     }
 
     public hideModal(): void {
@@ -64,6 +65,7 @@ export class ProductModalComponent implements OnInit {
             this.modalRef.hide();
         }
         this.form.reset();
+        this.submitted = false;
         this.error = '';
     }
 

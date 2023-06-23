@@ -6,6 +6,9 @@
         (onProductDelete)="deleteProduct($event)"
         (onProductUpdate)="onUpdateProducts($event)">
     </app-products-list>
+    <div *ngIf="error" class="alert alert-danger col-lg-3 col-md-6 col-sm-8 m-auto mb-2" role="alert">
+        {{ error }}
+    </div>
     <div class="col-lg-3 col-md-6 col-sm-8 m-auto mb-4">
         <button type="button" class="btn btn-primary col-12" (click)="openProductModal()" [disabled]="products.length > 11">Add product</button>
     </div>

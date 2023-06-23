@@ -41,9 +41,9 @@ export class LoginComponent implements OnInit {
         const body: UserData = this.form.getRawValue();
         this.authService.login(body).pipe(
             first(),
-            catchError(e => {
-                this.error = e.error.message;
-                return throwError(e);
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
             })
         ).subscribe((data: UserData) => {
             this.authService.manageLocalStorage(data);

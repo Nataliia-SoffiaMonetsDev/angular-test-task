@@ -1,0 +1,9 @@
+<ng-template #template>
+    <div class="modal-body text-center">
+        <p class="mt-3">Are you sure you want ot remove this product? {{ modalText }}</p>
+    </div>
+    <div class="modal-footer d-flex align-items-center justify-content-around">
+        <button class="btn btn-secondary px-4" (click)="hideModal()">No</button>
+        <button class="btn btn-primary px-4" (click)="confirmAction()">Yes</button>
+    </div>
+</ng-template>

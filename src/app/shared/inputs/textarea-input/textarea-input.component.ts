@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseInputDirective } from '../base-input.directive';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ]
 })
 export class TextareaInputComponent extends BaseInputDirective implements OnInit {
+
+    @Input() charLimit: number = 100;
 
     constructor() {
         super();

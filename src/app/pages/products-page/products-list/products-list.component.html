@@ -16,3 +16,5 @@
 
 <app-product-modal #editProductModalComponent [isEditMode]="true" [error]="error" (onEditProduct)="editProduct($event)">
 </app-product-modal>
+
+<app-confirm-modal #confirmModalComponent (onConfirm)="onConfirmProductDelete()"></app-confirm-modal>
