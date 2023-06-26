@@ -52,6 +52,7 @@ export class ProductDetailsComponent implements OnInit {
     }
 
     public editProduct(product: ProductData) {
+        this.error = '';
         const isProductEdited: boolean = !(product.name === this.product?.name && product.description === this.product?.description);
         if (isProductEdited) {
             this.producService.updateProduct(product).pipe(
@@ -63,7 +64,6 @@ export class ProductDetailsComponent implements OnInit {
             ).subscribe((data: ProductData[]) => {
                 this.product = data.find((product: any) => product._id === this.productId);
                 this.editProductModalComponent.hideModal();
-                this.error = '';
             });
         } else {
             this.editProductModalComponent.hideModal();
@@ -71,6 +71,7 @@ export class ProductDetailsComponent implements OnInit {
     }
 
     private getProduct(): void {
+        this.error = '';
         this.producService.getProduct(this.productId).pipe(
             first(),
             catchError(error => {
@@ -80,7 +81,6 @@ export class ProductDetailsComponent implements OnInit {
         ).subscribe((data: ProductData) => {
             this.product = data;
             this.loading.set(false);
-            this.error = '';
         });
     }
 }

@@ -44,6 +44,7 @@ export class ProductsPageComponent implements OnInit {
     }
 
     public addProduct(productInfo: ProductData): void {
+        this.error = '';
         const body: ProductData = {
             name: productInfo.name,
             description: productInfo.description
@@ -57,7 +58,6 @@ export class ProductsPageComponent implements OnInit {
         ).subscribe((data: ProductData) => {
             this.products.push(data);
             this.addProductModalComponent.hideModal();
-            this.error = '';
         });
     }
 
@@ -66,6 +66,7 @@ export class ProductsPageComponent implements OnInit {
     }
 
     private getAllProducts(): void {
+        this.error = '';
         this.productService.getAllProducts().pipe(
             first(),
             catchError(error => {
@@ -75,7 +76,6 @@ export class ProductsPageComponent implements OnInit {
         ).subscribe((data: ProductData[]) => {
             this.products = data;
             this.loading.set(false);
-            this.error = '';
         });
     }
 }
