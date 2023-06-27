@@ -62,7 +62,7 @@ export class ProductDetailsComponent implements OnInit {
                     return throwError(error);
                 })
             ).subscribe((data: ProductData[]) => {
-                this.product = data.find((product: any) => product._id === this.productId);
+                this.product = data.find((product: ProductData) => product._id === this.productId);
                 this.editProductModalComponent.hideModal();
             });
         } else {

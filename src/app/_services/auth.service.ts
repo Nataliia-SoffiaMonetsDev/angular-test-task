@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserData } from '../shared/interfaces/data.interfaces';
+import { LogoutResponse, UserData } from '../shared/interfaces/data.interfaces';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -24,8 +24,8 @@ export class AuthService {
         return this.http.post<UserData>(`${this.resourceUrl}/auth/login`, body, { withCredentials: true });
     }
 
-    public logout(): Observable<any> {
-        return this.http.post<any>(`${this.resourceUrl}/auth/logout`, {}, { withCredentials: true });
+    public logout(): Observable<LogoutResponse> {
+        return this.http.post<LogoutResponse>(`${this.resourceUrl}/auth/logout`, {}, { withCredentials: true });
     }
 
     public manageLocalStorage(data?: UserData): void {

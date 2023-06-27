@@ -55,7 +55,7 @@ export class ProductsListComponent implements OnInit {
     }
 
     public editProduct(product: ProductData) {
-        const existingProduct: ProductData = this.products.find((prod: any) => prod._id === product._id);
+        const existingProduct: ProductData = this.products.find((prod: ProductData) => prod._id === product._id);
         const isProductEdited: boolean = !(product.name === existingProduct.name && product.description === existingProduct.description);
         if (isProductEdited) {
             this.producService.updateProduct(product).pipe(

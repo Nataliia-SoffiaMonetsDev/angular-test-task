@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed } from '@angular/core';
+import { Component, OnInit, Signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -17,7 +17,7 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 })
 export class HeaderComponent implements OnInit {
     
-    public isLoggedIn: any;
+    public isLoggedIn: Signal<boolean>;
 
     constructor(
         private router: Router,

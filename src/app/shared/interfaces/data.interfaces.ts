@@ -10,3 +10,8 @@ export interface ProductData {
     description: string;
     _id?: string;
 }
+
+export interface LogoutResponse {
+    acknowledged: boolean
+    deletedCount: number
+}
