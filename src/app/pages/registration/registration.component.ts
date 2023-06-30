@@ -1,16 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MustMatch } from '../../_validators/must-match.validator';
 import { AuthService } from 'src/app/_services/auth.service';
 import { catchError, first, throwError } from 'rxjs';
 import { RegisterForm } from 'src/app/shared/interfaces/forms.interfaces';
 import { UserData } from 'src/app/shared/interfaces/data.interfaces';
+import { CommonModule } from '@angular/common';
+import { TextInputComponent } from 'src/app/shared/inputs/text-input/text-input.component';
+import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/textarea-input.component';
 
 @Component({
-  selector: 'app-registration',
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+    standalone: true,
+    selector: 'app-registration',
+    templateUrl: './registration.component.html',
+    styleUrls: ['./registration.component.scss'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TextInputComponent,
+        TextareaInputComponent
+    ]
 })
 export class RegistrationComponent implements OnInit {
 
@@ -31,15 +42,15 @@ export class RegistrationComponent implements OnInit {
             password: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(6), Validators.maxLength(10)] }),
             confirmPassword: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(6), Validators.maxLength(10)] }),
         },
-        {
-            validators: [
-                MustMatch(
-                    'password',
-                    'confirmPassword',
-                    false
-                )
-            ]
-        });
+            {
+                validators: [
+                    MustMatch(
+                        'password',
+                        'confirmPassword',
+                        false
+                    )
+                ]
+            });
         if (this.authService.isLoggedIn()) {
             this.router.navigate(['/products']);
         }

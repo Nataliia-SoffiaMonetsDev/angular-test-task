@@ -1,15 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, first, throwError } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth.service';
+import { TextInputComponent } from 'src/app/shared/inputs/text-input/text-input.component';
+import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/textarea-input.component';
 import { UserData } from 'src/app/shared/interfaces/data.interfaces';
 import { LoginForm } from 'src/app/shared/interfaces/forms.interfaces';
+import { CommonModule } from '@angular/common';
 
 @Component({
+    standalone: true,
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TextInputComponent,
+        TextareaInputComponent
+    ]
 })
 export class LoginComponent implements OnInit {
     

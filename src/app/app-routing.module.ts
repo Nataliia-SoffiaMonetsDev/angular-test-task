@@ -10,20 +10,20 @@ const routes: Routes = [
     },
     {
         path: 'registration',
-        loadChildren: () => import('./pages/registration/registration.module').then(m => m.RegistrationModule) 
+        loadComponent: () => import('./pages/registration/registration.component').then(mod => mod.RegistrationComponent)
     },
     {
         path: 'login',
-        loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
+        loadComponent: () => import('./pages/login/login.component').then(mod => mod.LoginComponent)
     },
     {
         path: 'products',
-        loadChildren: () => import('./pages/products-page/products-page.module').then(m => m.ProductsPageModule),
+        loadComponent: () => import('./pages/products-page/products-page.component').then(mod => mod.ProductsPageComponent),
         canActivate: [AuthGuard]
     },
     {
         path: 'product-details/:id',
-        loadChildren: () => import('./pages/product-details/product-details.module').then(m => m.ProductDetailsModule),
+        loadComponent: () => import('./pages/product-details/product-details.component').then(mod => mod.ProductDetailsComponent),
         canActivate: [AuthGuard]
     }
 ];

@@ -3,11 +3,21 @@ import { ProductModalComponent } from '../../shared/product-modal/product-modal.
 import { ProductService } from 'src/app/_services/product.service';
 import { catchError, first, throwError } from 'rxjs';
 import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
+import { CommonModule } from '@angular/common';
+import { ProductsListComponent } from './products-list/products-list.component';
+import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-screen.component';
 
 @Component({
+    standalone: true,
     selector: 'app-products-page',
     templateUrl: './products-page.component.html',
-    styleUrls: ['./products-page.component.scss']
+    styleUrls: ['./products-page.component.scss'],
+    imports: [
+        CommonModule,
+        ProductsListComponent,
+        ProductModalComponent,
+        LoadingScreenComponent
+    ]
 })
 export class ProductsPageComponent implements OnInit {
 

@@ -1,15 +1,25 @@
 import { Component, OnInit, ViewChild, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { catchError, first, throwError } from 'rxjs';
 import { ProductService } from 'src/app/_services/product.service';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
 import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
 import { ConfirmModalComponent } from 'src/app/shared/confirm-modal/confirm-modal.component';
+import { CommonModule } from '@angular/common';
+import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-screen.component';
 
 @Component({
+    standalone: true,
     selector: 'app-product-details',
     templateUrl: './product-details.component.html',
-    styleUrls: ['./product-details.component.scss']
+    styleUrls: ['./product-details.component.scss'],
+    imports: [
+        CommonModule,
+        ProductModalComponent,
+        LoadingScreenComponent,
+        ConfirmModalComponent,
+        RouterModule
+    ]
 })
 export class ProductDetailsComponent implements OnInit {
 

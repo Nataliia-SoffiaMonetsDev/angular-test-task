@@ -18,7 +18,7 @@ import { AuthInterceptor } from './_interceptors/auth.interceptor';
     AppRoutingModule,
     BrowserAnimationsModule,
     FooterComponent,
-    HeaderComponent,
+    HeaderComponent
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
