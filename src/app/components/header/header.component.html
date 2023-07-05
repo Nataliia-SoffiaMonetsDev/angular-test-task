@@ -8,7 +8,7 @@
         </div>
         <div>
             <ul class="nav nav-underline">
-                <ng-container *ngIf="!isLoggedIn()">
+                <ng-container *ngIf="!userData()">
                     <li class="nav-item">
                         <a class="nav-link" routerLinkActive="active" [routerLink]="['/registration']">Register</a>
                     </li>
@@ -16,8 +16,24 @@
                         <a class="nav-link" routerLinkActive="active" [routerLink]="['/login']">Login</a>
                     </li>
                 </ng-container>
-                <li *ngIf="isLoggedIn()" class="nav-item">
-                    <a class="nav-link" (click)="logOut()">Logout</a>
+                <li *ngIf="userData()" class="nav-item btn-group">
+                    <div class="user-actions dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-symbols-outlined">
+                            account_circle
+                        </span>
+                        <p class="my-0 mx-2">{{ userData().userName }}</p>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/products']">Product list</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/chat']">Chat</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" (click)="logOut()">Logout</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

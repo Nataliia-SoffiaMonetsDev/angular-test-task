@@ -7,6 +7,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterComponent } from './components/footer/footer.component';
 import { AuthInterceptor } from './_interceptors/auth.interceptor';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { DatePipe } from '@angular/common';
+
+const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
 
 @NgModule({
   declarations: [
@@ -18,13 +22,14 @@ import { AuthInterceptor } from './_interceptors/auth.interceptor';
     AppRoutingModule,
     BrowserAnimationsModule,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    SocketIoModule.forRoot(config)
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-  }],
+  }, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,12 @@
-.nav-link {
+.nav-link, .user-actions {
     color: unset;
 
     &:hover {
         color: #ffc107;
     }
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: black !important;
+    background: #ffc1074f !important;
 }

@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
 import { ProductService } from 'src/app/_services/product.service';
-import { catchError, first, throwError } from 'rxjs';
+import { Subject, catchError, first, takeUntil, throwError } from 'rxjs';
 import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
 import { CommonModule } from '@angular/common';
 import { ProductsListComponent } from './products-list/products-list.component';
@@ -19,11 +19,12 @@ import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-sc
         LoadingScreenComponent
     ]
 })
-export class ProductsPageComponent implements OnInit {
+export class ProductsPageComponent implements OnInit, OnDestroy {
 
     public products: ProductData[] = [];
     public loading = signal<boolean>(false);
     public error: string;
+    private destroy$: Subject<void> = new Subject<void>();
 
     @ViewChild('addProductModalComponent') addProductModalComponent: ProductModalComponent;
 
@@ -34,15 +35,20 @@ export class ProductsPageComponent implements OnInit {
     ngOnInit(): void {
         this.loading.set(true);
         this.getAllProducts();
-    }
 
-    public openProductModal(): void {
-        this.addProductModalComponent.openModal();
-    }
+        this.productService.getNewProductWithSocket().pipe(
+            takeUntil(this.destroy$),
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
+            })
+        ).subscribe((data: ProductData) => {
+            this.products.push(data);
+            this.addProductModalComponent.hideModal();
+        });
 
-    public deleteProduct(id: string): void {
-        this.productService.deleteProduct(id).pipe(
-            first(),
+        this.productService.getProductAfterDeleteWithSocket().pipe(
+            takeUntil(this.destroy$),
             catchError(error => {
                 this.error = error;
                 return throwError(error);
@@ -53,22 +59,46 @@ export class ProductsPageComponent implements OnInit {
         });
     }
 
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    public openProductModal(): void {
+        this.addProductModalComponent.openModal();
+    }
+
+    public deleteProduct(id: string): void {
+        // this.productService.deleteProduct(id).pipe(
+        //     first(),
+        //     catchError(error => {
+        //         this.error = error;
+        //         return throwError(error);
+        //     })
+        // ).subscribe((data: ProductData[]) => {
+        //     this.products = data;
+        //     this.error = '';
+        // });
+        this.productService.deleteProductWithSocket(id);
+    }
+
     public addProduct(productInfo: ProductData): void {
         this.error = '';
         const body: ProductData = {
             name: productInfo.name,
             description: productInfo.description
         };
-        this.productService.createProduct(body).pipe(
-            first(),
-            catchError(error => {
-                this.error = error;
-                return throwError(error);
-            })
-        ).subscribe((data: ProductData) => {
-            this.products.push(data);
-            this.addProductModalComponent.hideModal();
-        });
+        // this.productService.createProduct(body).pipe(
+        //     first(),
+        //     catchError(error => {
+        //         this.error = error;
+        //         return throwError(error);
+        //     })
+        // ).subscribe((data: ProductData) => {
+        //     this.products.push(data);
+        //     this.addProductModalComponent.hideModal();
+        // });
+        this.productService.createProductWithSocket(body);
     }
 
     public onUpdateProducts(products: ProductData[]): void {

@@ -3,6 +3,7 @@ export interface UserData {
     password: string;
     _id?: string;
     token?: string;
+    userName: string;
 }
 
 export interface ProductData {

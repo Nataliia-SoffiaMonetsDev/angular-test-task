@@ -1,16 +1,17 @@
 import { FormControl } from '@angular/forms';
 
 export interface LoginForm {
-    email: FormControl<string | null>;
-    password: FormControl<string | null>;
+    email: FormControl<string>;
+    password: FormControl<string>;
 }
 
 export interface RegisterForm extends LoginForm {
-    confirmPassword: FormControl<string | null>;
+    confirmPassword: FormControl<string>;
+    userName: FormControl<string>;
 }
 
 export interface ProductForm {
-    productName: FormControl<string | null>;
-    productDescription: FormControl<string | null>;
-    productId: FormControl<string | null>;
+    productName: FormControl<string>;
+    productDescription: FormControl<string>;
+    productId: FormControl<string>;
 }

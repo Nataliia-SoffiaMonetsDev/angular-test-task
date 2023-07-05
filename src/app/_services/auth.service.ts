@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
     private resourceUrl: string = environment.apiUrl;
-    public isUserLoggedIn = signal<boolean>(false);
+    public isUserLoggedIn = signal<UserData>(null);
 
     constructor(private http: HttpClient) {
         this.isUserLoggedIn.set(this.isLoggedIn());
@@ -32,7 +32,11 @@ export class AuthService {
         data ? localStorage.setItem('user', JSON.stringify(data)) : localStorage.removeItem('user');
     }
 
-    public isLoggedIn(): boolean {
-        return !!localStorage.getItem('user');
+    public isLoggedIn(): UserData {
+        return JSON.parse(localStorage.getItem('user'));
+    }
+
+    public getUsers(): Observable<UserData[]> {
+        return this.http.get<UserData[]>(`${this.resourceUrl}/auth/users`);
     }
 }

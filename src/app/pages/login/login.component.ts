@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
             })
         ).subscribe((data: UserData) => {
             this.authService.manageLocalStorage(data);
-            this.authService.isUserLoggedIn.set(true);
+            this.authService.isUserLoggedIn.set(data);
             this.router.navigate(['/products']);
         });
     }

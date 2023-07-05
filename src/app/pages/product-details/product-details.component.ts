@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { catchError, first, throwError } from 'rxjs';
+import { Subject, catchError, first, takeUntil, throwError } from 'rxjs';
 import { ProductService } from 'src/app/_services/product.service';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
 import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
@@ -21,18 +21,20 @@ import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-sc
         RouterModule
     ]
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit, OnDestroy {
 
     public product: ProductData;
     public loading = signal<boolean>(false);
     public error: string;
     private productId: string;
 
+    private destroy$: Subject<void> = new Subject<void>();
+
     @ViewChild('editProductModalComponent') editProductModalComponent: ProductModalComponent;
     @ViewChild('confirmModalComponent') confirmModalComponent: ConfirmModalComponent;
 
     constructor(
-        private producService: ProductService,
+        private productService: ProductService,
         private route: ActivatedRoute,
         private router: Router
     ) { }
@@ -43,6 +45,22 @@ export class ProductDetailsComponent implements OnInit {
             this.productId = params['id'] ? params['id'] : null;
         });
         this.getProduct();
+
+        this.productService.getUpdatedProductWithSocket().pipe(
+            takeUntil(this.destroy$),
+            catchError(error => {
+                this.error = error;
+                return throwError(error);
+            })
+        ).subscribe((data: ProductData[]) => {
+            this.product = data.find((product: ProductData) => product._id === this.productId);
+            this.editProductModalComponent.hideModal();
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     public openEditModal(product: ProductData) {
@@ -50,31 +68,34 @@ export class ProductDetailsComponent implements OnInit {
     }
 
     public deleteProduct(): void {
-        this.producService.deleteProduct(this.productId).pipe(
-            first(),
-            catchError(error => {
-                this.error = error;
-                return throwError(error);
-            })
-        ).subscribe(() => {
-            this.router.navigate(['/products']);
-        });
+        this.productService.deleteProductWithSocket(this.productId);
+        this.router.navigate(['/products']);
+        // this.productService.deleteProduct(this.productId).pipe(
+        //     first(),
+        //     catchError(error => {
+        //         this.error = error;
+        //         return throwError(error);
+        //     })
+        // ).subscribe(() => {
+        //     this.router.navigate(['/products']);
+        // });
     }
 
     public editProduct(product: ProductData) {
         this.error = '';
         const isProductEdited: boolean = !(product.name === this.product?.name && product.description === this.product?.description);
         if (isProductEdited) {
-            this.producService.updateProduct(product).pipe(
-                first(),
-                catchError(error => {
-                    this.error = error;
-                    return throwError(error);
-                })
-            ).subscribe((data: ProductData[]) => {
-                this.product = data.find((product: ProductData) => product._id === this.productId);
-                this.editProductModalComponent.hideModal();
-            });
+            this.productService.updateProductWithSocket(product);
+            // this.productService.updateProduct(product).pipe(
+            //     first(),
+            //     catchError(error => {
+            //         this.error = error;
+            //         return throwError(error);
+            //     })
+            // ).subscribe((data: ProductData[]) => {
+            //     this.product = data.find((product: ProductData) => product._id === this.productId);
+            //     this.editProductModalComponent.hideModal();
+            // });
         } else {
             this.editProductModalComponent.hideModal();
         }
@@ -82,7 +103,7 @@ export class ProductDetailsComponent implements OnInit {
 
     private getProduct(): void {
         this.error = '';
-        this.producService.getProduct(this.productId).pipe(
+        this.productService.getProduct(this.productId).pipe(
             first(),
             catchError(error => {
                 this.error = error;

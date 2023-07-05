@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth.service';
 import { AppRoutingModule } from 'src/app/app-routing.module';
+import { UserData } from 'src/app/shared/interfaces/data.interfaces';
 
 @Component({
     standalone: true,
@@ -17,7 +18,7 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 })
 export class HeaderComponent implements OnInit {
     
-    public isLoggedIn: Signal<boolean>;
+    public userData: Signal<UserData>;
 
     constructor(
         private router: Router,
@@ -25,14 +26,14 @@ export class HeaderComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.isLoggedIn = computed(() => {
+        this.userData = computed(() => {
             return this.authService.isUserLoggedIn();
-        })
+        });
     }
 
     public logOut(): void {
         this.authService.logout().pipe(first()).subscribe(() => {
-            this.authService.isUserLoggedIn.set(false);
+            this.authService.isUserLoggedIn.set(null);
             this.authService.manageLocalStorage();
             this.router.navigate(['/login']);
         });

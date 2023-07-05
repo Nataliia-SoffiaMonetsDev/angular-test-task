@@ -16,7 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class TextareaInputComponent extends BaseInputDirective implements OnInit {
 
-    @Input() charLimit: number = 100;
+    @Input() charLimit: number;
+    @Input() placeholder: string = '';
 
     constructor() {
         super();
