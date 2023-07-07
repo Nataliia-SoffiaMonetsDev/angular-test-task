@@ -1,22 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
     standalone: true,
-    selector: 'app-confirm-modal',
-    templateUrl: './confirm-modal.component.html',
-    styleUrls: ['./confirm-modal.component.scss'],
+    selector: 'app-info-modal',
+    templateUrl: './info-modal.component.html',
+    styleUrls: ['./info-modal.component.scss'],
     imports: [
         CommonModule
     ],
     providers: [BsModalService]
 })
-export class ConfirmModalComponent {
+export class InfoModalComponent {
 
     public modalRef: BsModalRef;
+    @Input() modalText: string;
     @ViewChild('template') elementRef: TemplateRef<Element>;
-    @Output() onConfirm = new EventEmitter();
 
     constructor(
         private modalService: BsModalService
@@ -24,6 +24,9 @@ export class ConfirmModalComponent {
 
     public openModal(): void {
         this.modalRef = this.modalService.show(this.elementRef);
+        setTimeout(() => {
+            this.hideModal();
+        }, 2000);
     }
 
     public hideModal(): void {
@@ -32,8 +35,4 @@ export class ConfirmModalComponent {
         }
     }
 
-    public confirmAction(): void {
-        this.onConfirm.emit();
-        this.hideModal();
-    }
 }

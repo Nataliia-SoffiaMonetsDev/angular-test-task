@@ -12,3 +12,22 @@ app-root {
 main {
     overflow-y: auto;
 }
+
+app-chat {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+::-webkit-scrollbar {
+    width: .40rem;
+}
+::-webkit-scrollbar-thumb {
+    background-color: lightgray;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-track{
+    background: transparent;
+}

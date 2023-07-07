@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { ChatService } from 'src/app/_services/chat.service';
 import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/textarea-input.component';
-import { UserData } from 'src/app/shared/interfaces/data.interfaces';
+import { MessagesData, UserData } from 'src/app/shared/interfaces/data.interfaces';
+import { ChatForm } from 'src/app/shared/interfaces/forms.interfaces';
 
 @Component({
     standalone: true,
@@ -15,13 +16,13 @@ import { UserData } from 'src/app/shared/interfaces/data.interfaces';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        TextareaInputComponent,
+        TextareaInputComponent
     ],
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public newMessage$: Observable<string>;
-    public messages: any[] = [];
+    public messages: MessagesData[] = [];
     public form: FormGroup;
     public currentUser: UserData;
     private destroy$: Subject<void> = new Subject<void>();
@@ -40,21 +41,20 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         this.currentUser = JSON.parse(localStorage.getItem('user'));
-        this.form = this.formBuilder.group<any>({
+        this.form = this.formBuilder.group<ChatForm>({
             message: this.formBuilder.control(null, Validators.required)
         });
 
-        this.chatService.getAllMessages().pipe(takeUntil(this.destroy$)).subscribe((data) => {
+        this.chatService.getAllMessages().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData[]) => {
             this.messages = data;
         });
     }
 
     ngAfterViewInit(): void {
-        this.chatService.getNewMessage().pipe(takeUntil(this.destroy$)).subscribe((data) => {
+        this.scrollChatBody();
+        this.chatService.getNewMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
             this.messages.push(data);
-            setTimeout(() => {
-                this.scrollChatBody();
-            }, 100);
+            this.scrollChatBody();
         });
     }
 
@@ -75,11 +75,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private scrollChatBody(): void {
-        this.chatBodyContainer.nativeElement.scroll({
-            top: this.chatBodyContainer.nativeElement.scrollHeight,
-            left: 0,
-            behavior: 'smooth'
-        });
+        setTimeout(() => {
+            this.chatBodyContainer.nativeElement.scroll({
+                top: this.chatBodyContainer.nativeElement.scrollHeight,
+                left: 0,
+                behavior: 'smooth'
+            });
+        }, 100);
     }
 
 }

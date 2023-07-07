@@ -35,27 +35,15 @@ export class ProductService {
         return this.http.delete<ProductData[]>(`${this.resourceUrl}/products/${id}`);
     }
 
-    public createProductWithSocket(body: ProductData): void {
-        this.socket.emit('createProduct', body);
-    }
-
     public getNewProductWithSocket(): Observable<ProductData> {
         return this.socket.fromEvent<ProductData>('newProduct');
     }
 
-    public updateProductWithSocket(body: ProductData): void {
-        this.socket.emit('updateProduct', body);
+    public getUpdatedProductWithSocket(): Observable<[ProductData[], {updatedProductId: string}]> {
+        return this.socket.fromEvent<[ProductData[], {updatedProductId: string}]>('updatedProducts');
     }
 
-    public getUpdatedProductWithSocket(): Observable<ProductData[]> {
-        return this.socket.fromEvent<ProductData[]>('updatedProducts');
-    }
-
-    public deleteProductWithSocket(id: string): void {
-        this.socket.emit('deleteProduct', id);
-    }
-
-    public getProductAfterDeleteWithSocket(): Observable<ProductData[]> {
-        return this.socket.fromEvent<ProductData[]>('productsAfterDelete');
+    public getProductAfterDeleteWithSocket(): Observable<[ProductData[], {deletedProductName: string}]> {
+        return this.socket.fromEvent<[ProductData[], {deletedProductName: string}]>('productsAfterDelete');
     }
 }

@@ -10,3 +10,33 @@
     color: black !important;
     background: #ffc1074f !important;
 }
+
+.message-body {
+    max-width: 300px;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.messages-count {
+    width: 15px;
+    height: 15px;
+    background-color: #ffc107;
+    font-size: 10px;
+    position: absolute;
+    left: 1.5em;
+    top: 1.5em;
+}
+
+.notification-item {
+    display: block;
+    width: 100%;
+    padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x);
+    white-space: nowrap;
+}
+
+.notifications-menu {
+    max-height: 400px;
+    overflow-y: auto;
+}

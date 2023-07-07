@@ -1,4 +1,9 @@
 .card-body {
-    max-height: 450px;
-    overflow-y: scroll;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.chat-box {
+    height: 90%;
+    width: 100%;
 }

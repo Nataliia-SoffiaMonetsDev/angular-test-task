@@ -1,8 +1,8 @@
-<section>
-    <div class="container pt-5">
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-8 col-lg-6 col-xl-4">
-                <div class="card" id="chat1" style="border-radius: 15px;">
+<section class="chat-box">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center h-100">
+            <div class="col-md-8 col-lg-6 col-xl-4 h-100">
+                <div class="card h-100" id="chat1" style="border-radius: 15px;">
                     <div class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
                         style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                         <i class="fas fa-angle-left"></i>
@@ -10,16 +10,21 @@
                         <i class="fas fa-times"></i>
                     </div>
                     <div class="card-body" #chatBody>
+                        <ng-container *ngIf="messages.length === 0">
+                            <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+                                <p>There is no messages yet.</p>
+                            </div>
+                        </ng-container>
                         <ng-container *ngFor="let message of messages">
                             <div class="d-flex justify-content-between" [ngClass]="{'flex-row-reverse': message.userName === currentUser.userName}">
                                 <p class="small mb-1">{{ message.userName }}</p>
                                 <p class="small mb-1 text-muted">{{ message.date }}</p>
                               </div>
-                            <div class="d-flex align-items-center mb-4" [ngClass]="{'justify-content-start': message.userName !== currentUser.userName, 'justify-content-end': message.userName === currentUser.userName}">
+                            <div class="d-flex align-items-center mb-4" [ngClass]="{'justify-content-start': message.userName !== currentUser.userName, 'flex-row-reverse': message.userName === currentUser.userName}">
                                 <span class="material-symbols-outlined" style="font-size: 35px;">
                                     {{ message.userName === currentUser.userName ? 'sentiment_satisfied' : 'mood' }}
                                 </span>
-                                <div class="p-3 ms-3" style="border-radius: 15px;" [ngStyle]="{'background-color': message.userName === currentUser.userName ? 'rgba(57, 192, 237,.2)' : '#ffc1074f'}">
+                                <div class="p-3" style="border-radius: 15px;" [ngStyle]="{'background-color': message.userName === currentUser.userName ? 'rgba(57, 192, 237,.2)' : '#ffc1074f'}" [ngClass]="{'ms-3': message.userName !== currentUser.userName, 'me-3': message.userName === currentUser.userName}">
                                     <p class="small mb-0">{{ message.message }}</p>
                                 </div>
                             </div>
@@ -30,7 +35,7 @@
                             <app-textarea-input controlName="message" controlNamePrefix="chat" placeholder="Message"
                                 [form]="form">
                             </app-textarea-input>
-                            <button type="submit" class="btn btn-info btn-rounded float-end mt-2">Send</button>
+                            <button type="submit" class="btn btn-info btn-rounded float-end mt-2 text-white">Send</button>
                         </form>
                     </div>
                 </div>

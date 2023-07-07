@@ -15,3 +15,7 @@ export interface ProductForm {
     productDescription: FormControl<string>;
     productId: FormControl<string>;
 }
+
+export interface ChatForm {
+    message: FormControl<string>;
+}

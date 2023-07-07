@@ -1,0 +1,14 @@
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" [ngClass]="{'show': showMessage}" *ngIf="messageData">
+    <div class="toast-header">
+        <strong class="me-auto">Message</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" (click)="showMessage = false"></button>
+    </div>
+    <div class="toast-body">
+        <div class="d-flex align-items-center mb-2">
+            <p class="my-0">from: {{ messageData.userName }}</p>
+        </div>
+        <div class="w-100 h-75 border rounded p-2">
+            <p>{{ messageData.message }}</p>
+        </div>
+    </div>
+</div>
