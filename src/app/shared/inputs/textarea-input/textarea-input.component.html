@@ -1,6 +1,6 @@
 <div [formGroup]="form">
     <label for="fieldId" class="form-label">{{ label }}</label>
-    <textarea class="form-control" id="fieldId" rows="3" [maxlength]="charLimit" [formControlName]="controlName" [ngClass]="{ 'is-invalid': f?.errors && submitted }"></textarea>
+    <textarea class="form-control" id="fieldId" rows="3" [maxlength]="charLimit > 0 ? charLimit : null" [formControlName]="controlName" [ngClass]="{ 'is-invalid': f?.errors && submitted }" [placeholder]="placeholder"></textarea>
     <div *ngIf="charLimit && f.value" class="mt-2 text-muted">
         <small>Character limit: {{ f.value.length }}/{{ charLimit }}</small>
     </div>

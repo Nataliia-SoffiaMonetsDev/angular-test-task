@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductModalComponent } from '../../../shared/product-modal/product-modal.component';
 import { ProductService } from 'src/app/_services/product.service';
@@ -18,11 +18,10 @@ import { ConfirmModalComponent } from 'src/app/shared/confirm-modal/confirm-moda
         ConfirmModalComponent
     ]
 })
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent {
 
     @Input() products: ProductData[] = [];
     @Output() onProductDelete = new EventEmitter();
-    @Output() onProductUpdate = new EventEmitter();
     @ViewChild('editProductModalComponent') editProductModalComponent: ProductModalComponent;
     @ViewChild('confirmModalComponent') confirmModalComponent: ConfirmModalComponent;
 
@@ -31,11 +30,8 @@ export class ProductsListComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private producService: ProductService
+        private productService: ProductService
     ) { }
-
-    ngOnInit(): void {
-    }
 
     public deleteProduct(id: string): void {
         this.productId = id;
@@ -58,14 +54,13 @@ export class ProductsListComponent implements OnInit {
         const existingProduct: ProductData = this.products.find((prod: ProductData) => prod._id === product._id);
         const isProductEdited: boolean = !(product.name === existingProduct.name && product.description === existingProduct.description);
         if (isProductEdited) {
-            this.producService.updateProduct(product).pipe(
+            this.productService.updateProduct(product).pipe(
                 first(),
                 catchError(error => {
                     this.error = error;
                     return throwError(error);
                 })
-            ).subscribe((data: ProductData[]) => {
-                this.onProductUpdate.emit(data);
+            ).subscribe(() => {
                 this.editProductModalComponent.hideModal();
             });
         } else {

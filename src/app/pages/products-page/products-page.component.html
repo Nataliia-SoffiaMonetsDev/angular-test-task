@@ -3,8 +3,7 @@
     <h1 class="m-auto">Existing products</h1>
     <app-products-list
         [products]="products"
-        (onProductDelete)="deleteProduct($event)"
-        (onProductUpdate)="onUpdateProducts($event)">
+        (onProductDelete)="deleteProduct($event)">
     </app-products-list>
     <div *ngIf="error" class="alert alert-danger col-lg-3 col-md-6 col-sm-8 m-auto mb-2" role="alert">
         {{ error }}
@@ -16,3 +15,8 @@
 
 <app-product-modal #addProductModalComponent [error]="error" (onAddProduct)="addProduct($event)">
 </app-product-modal>
+
+<app-info-modal #productInfoModal [modalText]="modalInfoText">
+</app-info-modal>
+
+<app-messages-notification [showMessage]="showMessage" [messageData]="currentMessage"></app-messages-notification>

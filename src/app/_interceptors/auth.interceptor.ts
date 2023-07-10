@@ -33,7 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
             if ([401].indexOf(e.status) !== -1) {
                 this.authService.logout().pipe(first()).subscribe(
                     () => {
-                        this.authService.isUserLoggedIn.set(false);
+                        this.authService.isUserLoggedIn.set(null);
                         this.authService.manageLocalStorage();
                         this.router.navigate(['/login']);
                     }

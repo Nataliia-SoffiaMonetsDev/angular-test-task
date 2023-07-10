@@ -8,7 +8,7 @@
         </div>
         <div>
             <ul class="nav nav-underline">
-                <ng-container *ngIf="!isLoggedIn()">
+                <ng-container *ngIf="!userData()">
                     <li class="nav-item">
                         <a class="nav-link" routerLinkActive="active" [routerLink]="['/registration']">Register</a>
                     </li>
@@ -16,10 +16,61 @@
                         <a class="nav-link" routerLinkActive="active" [routerLink]="['/login']">Login</a>
                     </li>
                 </ng-container>
-                <li *ngIf="isLoggedIn()" class="nav-item">
-                    <a class="nav-link" (click)="logOut()">Logout</a>
-                </li>
+                <ng-container *ngIf="userData()">
+                    <li class="nav-item btn-group">
+                        <div class="user-actions dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                            <span class="material-symbols-outlined">
+                                account_circle
+                            </span>
+                            <p class="my-0 mx-2">{{ userData().userName }}</p>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/products']">Product list</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/chat']">Chat</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" (click)="logOut()">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item btn-group" *ngIf="!router.url.includes('/chat')">
+                        <div class="d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="material-symbols-outlined user-actions" style="cursor: pointer;">
+                                notifications
+                            </span>
+                            <div *ngIf="messages.length > 0" class="messages-count justify-content-center d-flex align-items-center rounded-circle">
+                                <small>{{ messages.length }}</small>
+                            </div>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end p-2 notifications-menu" (click)="stopClosing($event)">
+                            <ng-container *ngIf="messages && messages.length > 0">
+                                <li class="my-2 border rounded" *ngFor="let message of messages">
+                                    <div class="border-bottom d-flex justify-content-around align-items-center">
+                                        <p class="notification-item my-0">From: {{ message.userName }}</p>
+                                        <small class="notification-item my-0">{{ message.date }}</small>
+                                        <span class="material-symbols-outlined pointer" (click)="deleteNotification(message._id)" style="cursor: pointer;">
+                                            close
+                                        </span>
+                                    </div>
+                                    <a class="dropdown-item mb-0 mt-1 message-body" [routerLink]="['/chat']">{{ message.message }}</a>
+                                </li>
+                            </ng-container>
+                            <li class="my-2 border rounded" *ngIf="messages.length === 0">
+                                <p class="notification-item my-1 message-body">No notifications</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ng-container>
             </ul>
         </div>
     </div>
 </nav>
+<div *ngIf="error" class="col-6 alert alert-danger m-auto z-3 d-flex justify-content-between" role="alert">
+    <p class="m-0">{{ error }}</p>
+    <span class="material-symbols-outlined pointer" style="cursor: pointer;" (click)="error = ''">
+        close
+    </span>
+</div>

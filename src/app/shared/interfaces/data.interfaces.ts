@@ -3,6 +3,7 @@ export interface UserData {
     password: string;
     _id?: string;
     token?: string;
+    userName: string;
 }
 
 export interface ProductData {
@@ -12,6 +13,19 @@ export interface ProductData {
 }
 
 export interface LogoutResponse {
-    acknowledged: boolean
-    deletedCount: number
+    acknowledged: boolean;
+    deletedCount: number;
+}
+
+export interface MessagesData {
+    date: string;
+    message: string;
+    userName: string;
+    _id?: string;
+}
+
+export interface NotificationData {
+    recipientId: string;
+    messages: MessagesData[];
+    _id?: string;
 }

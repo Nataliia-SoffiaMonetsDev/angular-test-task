@@ -28,3 +28,8 @@
 </app-product-modal>
 
 <app-confirm-modal #confirmModalComponent (onConfirm)="deleteProduct()"></app-confirm-modal>
+
+<app-info-modal #productInfoModal [modalText]="modalInfoText">
+</app-info-modal>
+
+<app-messages-notification [showMessage]="showMessage" [messageData]="currentMessage"></app-messages-notification>

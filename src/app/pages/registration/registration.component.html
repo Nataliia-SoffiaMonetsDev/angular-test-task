@@ -4,6 +4,15 @@
             <h1 class="m-auto mb-3">Registration</h1>
             <div class="mb-3 col-12">
                 <app-text-input
+                    label="Name"
+                    controlName="userName"
+                    controlNamePrefix="registration"
+                    [form]="form"
+                    [submitted]="submitted">
+                </app-text-input>
+            </div>
+            <div class="mb-3 col-12">
+                <app-text-input
                     label="Email"
                     controlName="email"
                     controlNamePrefix="registration"

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './_guards/auth.guard';
+import { ChatComponent } from './pages/chat/chat.component';
 
 const routes: Routes = [
     {
@@ -24,6 +25,11 @@ const routes: Routes = [
     {
         path: 'product-details/:id',
         loadComponent: () => import('./pages/product-details/product-details.component').then(mod => mod.ProductDetailsComponent),
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'chat',
+        loadComponent: () => import('./pages/chat/chat.component').then(mod => mod.ChatComponent),
         canActivate: [AuthGuard]
     }
 ];

@@ -39,6 +39,7 @@ export class RegistrationComponent implements OnInit {
     ngOnInit(): void {
         this.form = this.formBuilder.group<RegisterForm>({
             email: this.formBuilder.control(null, { validators: [Validators.required, Validators.email] }),
+            userName: this.formBuilder.control(null, Validators.required),
             password: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(6), Validators.maxLength(10)] }),
             confirmPassword: this.formBuilder.control(null, { validators: [Validators.required, Validators.minLength(6), Validators.maxLength(10)] }),
         },
@@ -63,7 +64,8 @@ export class RegistrationComponent implements OnInit {
         }
         const body: UserData = {
             email: this.f['email'].value,
-            password: this.f['password'].value
+            password: this.f['password'].value,
+            userName: this.f['userName'].value
         };
         this.authService.register(body).pipe(
             first(),
