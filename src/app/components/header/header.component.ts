@@ -81,7 +81,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.chatService.getAllNotifications().pipe(takeUntil(this.destroy$)).subscribe((data: NotificationData[]) => {
             if (this.userData()) {
                 const notifications = data.filter(notification => this.userData()._id === notification.recipientId);
-                this.messages = notifications[0].messages;
+                if (notifications) {
+                    this.messages = notifications[0].messages;
+                }
             }
         });
     }
