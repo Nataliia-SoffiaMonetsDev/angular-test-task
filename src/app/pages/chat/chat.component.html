@@ -35,7 +35,15 @@
                             <app-textarea-input controlName="message" controlNamePrefix="chat" placeholder="Message"
                                 [form]="form">
                             </app-textarea-input>
-                            <button type="submit" class="btn btn-info btn-rounded float-end mt-2 text-white">Send</button>
+                            <div>
+                                <div *ngIf="error" class="alert alert-danger m-auto mt-2 d-flex justify-content-between" role="alert">
+                                    <p class="m-0">{{ error }}</p>
+                                    <span class="material-symbols-outlined pointer" style="cursor: pointer;" (click)="error = ''">
+                                        close
+                                    </span>
+                                </div>
+                                <button type="submit" class="btn btn-info btn-rounded float-end mt-2 text-white">Send</button>
+                            </div>
                         </form>
                     </div>
                 </div>

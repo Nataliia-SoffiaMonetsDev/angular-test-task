@@ -25,6 +25,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     public messages: MessagesData[] = [];
     public form: FormGroup;
     public currentUser: UserData;
+    public error: string;
     private destroy$: Subject<void> = new Subject<void>();
 
     @ViewChild('chatBody') private chatBodyContainer: ElementRef;
@@ -45,17 +46,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
             message: this.formBuilder.control(null, Validators.required)
         });
 
-        this.chatService.getAllMessages().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData[]) => {
-            this.messages = data;
-        });
+        this.getAllMessages();
+        this.getError();
     }
 
     ngAfterViewInit(): void {
         this.scrollChatBody();
-        this.chatService.getNewMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
-            this.messages.push(data);
-            this.scrollChatBody();
-        });
+        this.getNewMessages();
     }
 
     ngOnDestroy(): void {
@@ -82,6 +79,26 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
                 behavior: 'smooth'
             });
         }, 100);
+    }
+
+    private getAllMessages(): void {
+        this.chatService.getAllMessages().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData[]) => {
+            this.messages = data;
+        });
+    }
+
+    private getNewMessages(): void {
+        this.chatService.getNewMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
+            this.messages.push(data);
+            this.scrollChatBody();
+            this.chatService.clearAllNotifications(this.currentUser._id);
+        });
+    }
+
+    private getError(): void {
+        this.chatService.getMessageError().pipe(takeUntil(this.destroy$)).subscribe((error: string) => {
+            this.error = error;
+        });
     }
 
 }

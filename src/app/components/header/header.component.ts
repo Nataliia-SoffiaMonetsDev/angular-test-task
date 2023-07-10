@@ -21,8 +21,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     public userData: Signal<UserData>;
     public messages: MessagesData[] = [];
+    public error: string;
     private destroy$: Subject<void> = new Subject<void>();
-    private recipientId: string;
 
     constructor(
         public router: Router,
@@ -45,6 +45,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 }
             }
         });
+
+        this.getError();
     }
 
     ngOnDestroy(): void {
@@ -61,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     public deleteNotification(id: string): void {
-        this.chatService.deleteNotification(this.recipientId, id);
+        this.chatService.deleteNotification(this.userData()._id, id);
     }
 
     public stopClosing(event: MouseEvent): void {
@@ -79,7 +81,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.chatService.getAllNotifications().pipe(takeUntil(this.destroy$)).subscribe((data: NotificationData[]) => {
             if (this.userData()) {
                 const notifications = data.filter(notification => this.userData()._id === notification.recipientId);
-                this.recipientId = notifications[0]._id;
                 this.messages = notifications[0].messages;
             }
         });
@@ -93,6 +94,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     private clearAllNotifications(): void {
-        this.chatService.clearAllNotifications(this.recipientId);
+        this.chatService.clearAllNotifications(this.userData()._id);
+    }
+
+    private getError(): void {
+        this.chatService.getNotificationError().pipe(takeUntil(this.destroy$)).subscribe((error: string) => {
+            this.error = error;
+        });
     }
 }

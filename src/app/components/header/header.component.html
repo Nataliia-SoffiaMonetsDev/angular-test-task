@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <ul class="dropdown-menu dropdown-menu-end p-2 notifications-menu" (click)="stopClosing($event)">
-                            <ng-container *ngIf="messages.length > 0">
+                            <ng-container *ngIf="messages && messages.length > 0">
                                 <li class="my-2 border rounded" *ngFor="let message of messages">
                                     <div class="border-bottom d-flex justify-content-around align-items-center">
                                         <p class="notification-item my-0">From: {{ message.userName }}</p>
@@ -68,3 +68,9 @@
         </div>
     </div>
 </nav>
+<div *ngIf="error" class="col-6 alert alert-danger m-auto z-3 d-flex justify-content-between" role="alert">
+    <p class="m-0">{{ error }}</p>
+    <span class="material-symbols-outlined pointer" style="cursor: pointer;" (click)="error = ''">
+        close
+    </span>
+</div>

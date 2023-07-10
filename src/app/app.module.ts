@@ -9,8 +9,9 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AuthInterceptor } from './_interceptors/auth.interceptor';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { DatePipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
-const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
+const config: SocketIoConfig = { url: environment.apiUrl, options: {} };
 
 @NgModule({
   declarations: [

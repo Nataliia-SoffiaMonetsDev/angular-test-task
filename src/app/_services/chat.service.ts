@@ -46,4 +46,12 @@ export class ChatService {
     public clearAllNotifications(recipientId: string): void {
         this.socket.emit('deleteAllNotifications', recipientId);
     }
+
+    public getMessageError(): Observable<string> {
+        return this.socket.fromEvent<string>('messageError');
+    }
+
+    public getNotificationError(): Observable<string> {
+        return this.socket.fromEvent<string>('notificationError');
+    }
 }
