@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
-import { ProductService } from 'src/app/_services/product.service';
+import { ProductService } from 'src/app/_services/product-service/product.service';
 import { Subject, catchError, first, takeUntil, throwError } from 'rxjs';
 import { MessagesData, ProductData } from 'src/app/shared/interfaces/data.interfaces';
 import { CommonModule } from '@angular/common';

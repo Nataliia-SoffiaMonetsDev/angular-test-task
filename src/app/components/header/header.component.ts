@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, Signal, computed } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject, first, takeUntil } from 'rxjs';
-import { AuthService } from 'src/app/_services/auth.service';
+import { AuthService } from 'src/app/_services/auth-service/auth.service';
 import { ChatService } from 'src/app/_services/chat.service';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { MessagesData, NotificationData, UserData } from 'src/app/shared/interfaces/data.interfaces';

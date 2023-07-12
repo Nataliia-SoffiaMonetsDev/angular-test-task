@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MustMatch } from '../../_validators/must-match.validator';
-import { AuthService } from 'src/app/_services/auth.service';
+import { AuthService } from 'src/app/_services/auth-service/auth.service';
 import { catchError, first, throwError } from 'rxjs';
 import { RegisterForm } from 'src/app/shared/interfaces/forms.interfaces';
 import { UserData } from 'src/app/shared/interfaces/data.interfaces';
@@ -31,8 +31,8 @@ export class RegistrationComponent implements OnInit {
     public get f() { return this.form.controls; };
 
     constructor(
+        public router: Router,
         private formBuilder: FormBuilder,
-        private router: Router,
         private authService: AuthService
     ) { }
 

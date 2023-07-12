@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductModalComponent } from '../../../shared/product-modal/product-modal.component';
-import { ProductService } from 'src/app/_services/product.service';
+import { ProductService } from 'src/app/_services/product-service/product.service';
 import { catchError, first, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ProductData } from 'src/app/shared/interfaces/data.interfaces';

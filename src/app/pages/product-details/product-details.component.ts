@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subject, catchError, first, takeUntil, throwError } from 'rxjs';
-import { ProductService } from 'src/app/_services/product.service';
+import { ProductService } from 'src/app/_services/product-service/product.service';
 import { ProductModalComponent } from '../../shared/product-modal/product-modal.component';
 import { MessagesData, ProductData } from 'src/app/shared/interfaces/data.interfaces';
 import { ConfirmModalComponent } from 'src/app/shared/confirm-modal/confirm-modal.component';

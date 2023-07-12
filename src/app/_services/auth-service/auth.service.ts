@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LogoutResponse, UserData } from '../shared/interfaces/data.interfaces';
+import { LogoutResponse, UserData } from '../../shared/interfaces/data.interfaces';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

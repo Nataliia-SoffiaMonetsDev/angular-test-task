@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, first, throwError } from 'rxjs';
-import { AuthService } from 'src/app/_services/auth.service';
+import { AuthService } from 'src/app/_services/auth-service/auth.service';
 import { TextInputComponent } from 'src/app/shared/inputs/text-input/text-input.component';
 import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/textarea-input.component';
 import { UserData } from 'src/app/shared/interfaces/data.interfaces';
@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit {
     public error: string;
 
     constructor(
+        public router: Router,
         private formBuilder: FormBuilder,
-        private router: Router,
         private authService: AuthService
     ) { }
 
@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
         if (this.authService.isLoggedIn()) {
             this.router.navigate(['/products']);
         }
+        console.log(this.authService.isLoggedIn())
     }
 
     public logIn(): void {
