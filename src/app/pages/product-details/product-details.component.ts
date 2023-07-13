@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-screen.component';
 import { InfoModalComponent } from 'src/app/shared/info-modal/info-modal.component';
 import { MessagesNotificationComponent } from 'src/app/shared/messages-notification/messages-notification.component';
-import { ChatService } from 'src/app/_services/chat.service';
+import { ChatService } from 'src/app/_services/chat-service/chat.service';
 
 @Component({
     standalone: true,
@@ -35,7 +35,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     public showMessage: boolean = false;
     public currentMessage: MessagesData;
 
-    private productId: string;
+    public productId: string;
     private destroy$: Subject<void> = new Subject<void>();
 
     @ViewChild('editProductModalComponent') editProductModalComponent: ProductModalComponent;
@@ -43,9 +43,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('productInfoModal') productInfoModal: InfoModalComponent;
 
     constructor(
+        public router: Router,
         private productService: ProductService,
         private route: ActivatedRoute,
-        private router: Router,
         private chatService: ChatService,
     ) { }
 
@@ -101,7 +101,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getProduct(): void {
+    public getProduct(): void {
         this.error = '';
         this.productService.getProduct(this.productId).pipe(
             first(),
@@ -115,7 +115,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getUpdatedProductWithSocket(): void {
+    public getUpdatedProductWithSocket(): void {
         this.productService.getUpdatedProductWithSocket().pipe(
             takeUntil(this.destroy$)
         ).subscribe((data: [ProductData[], {updatedProductId: string}]) => {
@@ -126,7 +126,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getProductAfterDeleteWithSocket(): void {
+    public getProductAfterDeleteWithSocket(): void {
         this.productService.getProductAfterDeleteWithSocket().pipe(
             takeUntil(this.destroy$)
         ).subscribe((data: [ProductData[], {deletedProductName: string}]) => {
@@ -140,7 +140,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getNewProductWithSocket(): void {
+    public getNewProductWithSocket(): void {
         this.productService.getNewProductWithSocket().pipe(
             takeUntil(this.destroy$)
         ).subscribe((data: ProductData) => {
@@ -149,7 +149,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getNewMessage(): void {
+    public getNewMessage(): void {
         this.chatService.getExternalUserMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
             this.currentMessage = data;
             this.showMessage = true;

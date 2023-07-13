@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
-import { MessagesData, NotificationData } from '../shared/interfaces/data.interfaces';
+import { MessagesData, NotificationData } from '../../shared/interfaces/data.interfaces';
 
 @Injectable({
     providedIn: 'root'

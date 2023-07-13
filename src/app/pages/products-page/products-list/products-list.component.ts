@@ -29,7 +29,7 @@ export class ProductsListComponent {
     public productId: string;
 
     constructor(
-        private router: Router,
+        public router: Router,
         private productService: ProductService
     ) { }
 

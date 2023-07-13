@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ChatService } from 'src/app/_services/chat.service';
+import { ChatService } from 'src/app/_services/chat-service/chat.service';
 import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/textarea-input.component';
 import { MessagesData, UserData } from 'src/app/shared/interfaces/data.interfaces';
 import { ChatForm } from 'src/app/shared/interfaces/forms.interfaces';

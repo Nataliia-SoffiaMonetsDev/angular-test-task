@@ -8,7 +8,7 @@ import { ProductsListComponent } from './products-list/products-list.component';
 import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-screen.component';
 import { InfoModalComponent } from 'src/app/shared/info-modal/info-modal.component';
 import { MessagesNotificationComponent } from 'src/app/shared/messages-notification/messages-notification.component';
-import { ChatService } from 'src/app/_services/chat.service';
+import { ChatService } from 'src/app/_services/chat-service/chat.service';
 
 @Component({
     standalone: true,
@@ -89,7 +89,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getAllProducts(): void {
+    public getAllProducts(): void {
         this.error = '';
         this.productService.getAllProducts().pipe(
             first(),
@@ -103,7 +103,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getNewProductWithSocket(): void {
+    public getNewProductWithSocket(): void {
         this.productService.getNewProductWithSocket().pipe(
             takeUntil(this.destroy$)
         ).subscribe((data: ProductData) => {
@@ -113,20 +113,20 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getProductAfterDeleteWithSocket(): void {
+    public getProductAfterDeleteWithSocket(): void {
         this.productService.getProductAfterDeleteWithSocket().pipe(
             takeUntil(this.destroy$)
-        ).subscribe((data: [ProductData[], {deletedProductName: string}]) => {
+        ).subscribe((data: [ProductData[], { deletedProductName: string }]) => {
             this.modalInfoText = `Product '${data[1].deletedProductName}' has been deleted.`;
             this.products = data[0];
             this.productInfoModal.openModal();
         });
     }
 
-    private getUpdatedProductWithSocket(): void {
+    public getUpdatedProductWithSocket(): void {
         this.productService.getUpdatedProductWithSocket().pipe(
             takeUntil(this.destroy$)
-        ).subscribe((data: [ProductData[], {updatedProductId: string}]) => {
+        ).subscribe((data: [ProductData[], { updatedProductId: string }]) => {
             const product = data[0].find((prod: ProductData) => prod._id === data[1].updatedProductId);
             this.products = data[0];
             this.modalInfoText = `Product '${product.name}' has been updated.`;
@@ -134,7 +134,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getNewMessage(): void {
+    public getNewMessage(): void {
         this.chatService.getExternalUserMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
             this.currentMessage = data;
             this.showMessage = true;
