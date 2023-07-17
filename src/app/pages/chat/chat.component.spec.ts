@@ -79,7 +79,7 @@ describe('ChatComponent', () => {
             }
         };
         component.chatBodyContainer = chatBodyContainer;
-        component.scrollChatBody();
+        component['scrollChatBody']();
         setTimeout(() => {
             expect(scroll).toHaveBeenCalledWith({
                 top: chatBodyContainer.nativeElement.scrollHeight,
@@ -103,7 +103,7 @@ describe('ChatComponent', () => {
             }
         ]
         jest.spyOn(chatService, 'getAllMessages').mockReturnValue(of(messagesData));
-        component.getAllMessages();
+        component['getAllMessages']();
         expect(chatService.getAllMessages).toHaveBeenCalled();
         expect(component.messages).toEqual(messagesData);
     });
@@ -115,7 +115,7 @@ describe('ChatComponent', () => {
             userName: 'Name',
         }
         jest.spyOn(chatService, 'getNewMessage').mockReturnValue(of(messageData));
-        component.getNewMessages();
+        component['getNewMessages']();
         expect(chatService.getNewMessage).toHaveBeenCalled();
         expect(component.messages).toContain(messageData);
     });
@@ -123,7 +123,7 @@ describe('ChatComponent', () => {
     it('Get message error', () => {
         const messageError: string = 'Messages were not found.';
         jest.spyOn(chatService, 'getMessageError').mockReturnValue(of(messageError));
-        component.getError();
+        component['getError']();
         expect(chatService.getMessageError).toHaveBeenCalled();
         expect(component.error).toEqual(messageError);
     });

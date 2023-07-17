@@ -6,9 +6,9 @@ import { ChatService } from 'src/app/_services/chat-service/chat.service';
 import { HeaderComponent } from './header.component';
 import { AuthService } from 'src/app/_services/auth-service/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MessagesData, NotificationData, UserData } from 'src/app/shared/interfaces/data.interfaces';
+import { MessagesData, NotificationData } from 'src/app/shared/interfaces/data.interfaces';
 import { of } from 'rxjs';
-import { computed, Signal } from '@angular/core';
+import { computed } from '@angular/core';
 import { NavigationEnd } from '@angular/router';
 
 const config: SocketIoConfig = { url: environment.apiUrl, options: {} }
@@ -60,21 +60,21 @@ describe('HeaderComponent', () => {
         };
         const navigationEnd = new NavigationEnd(0, '/chat', '/chat');
         jest.spyOn(authService, 'isUserLoggedIn').mockReturnValue(userData);
-        jest.spyOn(component, 'getNewMessage');
-        jest.spyOn(component, 'getNotificationsAfterDelete');
-        jest.spyOn(component.router.events, 'pipe').mockReturnValue(of(navigationEnd));
-        jest.spyOn(component, 'getAllNotifications');
-        jest.spyOn(component, 'clearAllNotifications');
-        jest.spyOn(component, 'getError');
+        jest.spyOn(component as any, 'getNewMessage');
+        jest.spyOn(component as any, 'getNotificationsAfterDelete');
+        jest.spyOn(component['router'].events, 'pipe').mockReturnValue(of(navigationEnd));
+        jest.spyOn(component as any, 'getAllNotifications');
+        jest.spyOn(component as any, 'clearAllNotifications');
+        jest.spyOn(component as any, 'getError');
         component.ngOnInit();
         setTimeout(() => {
             expect(component.userData()).toBe(userData);
-            expect(component.getNewMessage).toHaveBeenCalled();
-            expect(component.getNotificationsAfterDelete).toHaveBeenCalled();
-            expect(component.router.events.pipe).toHaveBeenCalled();
-            expect(component.getAllNotifications).toHaveBeenCalled();
-            expect(component.clearAllNotifications).toHaveBeenCalled();
-            expect(component.getError).toHaveBeenCalled();
+            expect(component['getNewMessage']).toHaveBeenCalled();
+            expect(component['getNotificationsAfterDelete']).toHaveBeenCalled();
+            expect(component['router'].events.pipe).toHaveBeenCalled();
+            expect(component['getAllNotifications']).toHaveBeenCalled();
+            expect(component['clearAllNotifications']).toHaveBeenCalled();
+            expect(component['getError']).toHaveBeenCalled();
             expect(authService.isUserLoggedIn).toHaveBeenCalled();
         }, 1000);
     });
@@ -90,10 +90,10 @@ describe('HeaderComponent', () => {
             };
         });
         jest.spyOn(authService, 'logout').mockReturnValue(of(null));
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         component.logOut();
         expect(authService.logout).toHaveBeenCalled();
-        expect(component.router.navigate).toHaveBeenCalledWith(['/login']);
+        expect(component['router'].navigate).toHaveBeenCalledWith(['/login']);
     });
 
     it('Delete a notification', () => {
@@ -127,7 +127,7 @@ describe('HeaderComponent', () => {
             userName: 'Name',
         }
         jest.spyOn(chatService, 'getExternalUserMessage').mockReturnValue(of(messageData));
-        component.getNewMessage();
+        component['getNewMessage']();
         expect(chatService.getExternalUserMessage).toHaveBeenCalled();
         expect(component.messages).toContain(messageData);
     });
@@ -158,7 +158,7 @@ describe('HeaderComponent', () => {
         });
         jest.spyOn(chatService, 'requestAllNotifications');
         jest.spyOn(chatService, 'getAllNotifications').mockReturnValue(of(notififcationsData));
-        component.getAllNotifications();
+        component['getAllNotifications']();
         expect(chatService.requestAllNotifications).toHaveBeenCalled();
         expect(chatService.getAllNotifications).toHaveBeenCalled();
         expect(component.messages).toEqual(notififcationsData[0].messages);
@@ -189,7 +189,7 @@ describe('HeaderComponent', () => {
             };
         });
         jest.spyOn(chatService, 'getNotificationsAfterDelete').mockReturnValue(of(notififcationsData));
-        component.getNotificationsAfterDelete();
+        component['getNotificationsAfterDelete']();
         expect(chatService.getNotificationsAfterDelete).toHaveBeenCalled();
         expect(component.messages).toEqual(notififcationsData[0].messages);
     });
@@ -205,14 +205,14 @@ describe('HeaderComponent', () => {
             };
         });
         jest.spyOn(chatService, 'clearAllNotifications');
-        component.clearAllNotifications();
+        component['clearAllNotifications']();
         expect(chatService.clearAllNotifications).toHaveBeenCalledWith(component.userData()._id);
     });
 
     it('Get notification error', () => {
         const notificationError: string = 'Notification were not found';
         jest.spyOn(chatService, 'getNotificationError').mockReturnValue(of(notificationError));
-        component.getError();
+        component['getError']();
         expect(chatService.getNotificationError).toHaveBeenCalled();
         expect(component.error).toEqual(notificationError);
     });

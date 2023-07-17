@@ -59,9 +59,9 @@ describe('LoginComponent', () => {
 
     it('Should navigate to "/products" if user is already logged in', () => {
         jest.spyOn(authService, 'isLoggedIn').mockReturnValue(userData);
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         component.ngOnInit();
-        expect(component.router.navigate).toHaveBeenCalledWith(['/products']);
+        expect(component['router'].navigate).toHaveBeenCalledWith(['/products']);
     });
 
     it('From should be invalid and submitted should be true if the user has not entered data', () => {
@@ -122,24 +122,24 @@ describe('LoginComponent', () => {
         jest.spyOn(authService, 'login').mockReturnValue(of({} as UserData));
         const manageLocalStorage = jest.spyOn(authService, 'manageLocalStorage').mockImplementation();
         const isUserLoggedInSetData = jest.spyOn(authService.isUserLoggedIn, 'set').mockImplementation();
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         updateForm(validUser.email, validUser.password);
         component.logIn();
         expect(manageLocalStorage).toHaveBeenCalled();
         expect(isUserLoggedInSetData).toHaveBeenCalled();
-        expect(component.router.navigate).toHaveBeenCalledWith(['/products']);
+        expect(component['router'].navigate).toHaveBeenCalledWith(['/products']);
     });
 
     it('Login failed', () => {
         jest.spyOn(authService, 'login').mockReturnValue(throwError('User does not exists'));
         const manageLocalStorage = jest.spyOn(authService, 'manageLocalStorage').mockImplementation();
         const isUserLoggedInSetData = jest.spyOn(authService.isUserLoggedIn, 'set').mockImplementation();
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         updateForm('email@mail.com', 'abcd1234');
         component.logIn();
         expect(manageLocalStorage).not.toHaveBeenCalled();
         expect(isUserLoggedInSetData).not.toHaveBeenCalled();
-        expect(component.router.navigate).not.toHaveBeenCalledWith(['/products']);
+        expect(component['router'].navigate).not.toHaveBeenCalledWith(['/products']);
         expect(component.error).toBe('User does not exists');
 
         jest.spyOn(authService, 'login').mockReturnValue(throwError('Invalid password'));
@@ -147,7 +147,7 @@ describe('LoginComponent', () => {
         component.logIn();
         expect(manageLocalStorage).not.toHaveBeenCalled();
         expect(isUserLoggedInSetData).not.toHaveBeenCalled();
-        expect(component.router.navigate).not.toHaveBeenCalledWith(['/products']);
+        expect(component['router'].navigate).not.toHaveBeenCalledWith(['/products']);
         expect(component.error).toBe('Invalid password');
     });
 

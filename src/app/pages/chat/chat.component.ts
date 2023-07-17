@@ -70,7 +70,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
         this.form.reset();
     }
 
-    public scrollChatBody(): void {
+    private scrollChatBody(): void {
         setTimeout(() => {
             this.chatBodyContainer.nativeElement.scroll({
                 top: this.chatBodyContainer.nativeElement.scrollHeight,
@@ -80,13 +80,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
         }, 100);
     }
 
-    public getAllMessages(): void {
+    private getAllMessages(): void {
         this.chatService.getAllMessages().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData[]) => {
             this.messages = data;
         });
     }
 
-    public getNewMessages(): void {
+    private getNewMessages(): void {
         this.chatService.getNewMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
             this.messages.push(data);
             this.scrollChatBody();
@@ -94,7 +94,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    public getError(): void {
+    private getError(): void {
         this.chatService.getMessageError().pipe(takeUntil(this.destroy$)).subscribe((error: string) => {
             this.error = error;
         });

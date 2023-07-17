@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     public error: string;
 
     constructor(
-        public router: Router,
+        private router: Router,
         private formBuilder: FormBuilder,
         private authService: AuthService
     ) { }

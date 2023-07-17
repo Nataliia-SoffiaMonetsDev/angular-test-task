@@ -41,7 +41,7 @@ describe('ProductsListComponent', () => {
 
     it('Component initial state', () => {
         expect(component.error).toBeUndefined();
-        expect(component.productId).toBeUndefined();
+        expect(component['productId']).toBeUndefined();
     });
 
     it('Delete product', () => {
@@ -54,16 +54,16 @@ describe('ProductsListComponent', () => {
     it('Confirmation of product delete', () => {
         const productId: string = "64870f92e622309b8eaa38f6";
         jest.spyOn(component.onProductDelete, 'emit');
-        component.productId = productId;
+        component['productId'] = productId;
         component.onConfirmProductDelete();
-        expect(component.onProductDelete.emit).toHaveBeenCalledWith(component.productId);
+        expect(component.onProductDelete.emit).toHaveBeenCalledWith(component['productId']);
     });
 
     it('Navigate to product details', () => {
         const productId: string = "64870f92e622309b8eaa38f6";
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         component.navigateToProductDetails(productId);
-        expect(component.router.navigate).toHaveBeenCalledWith([`/product-details/${productId}`]);
+        expect(component['router'].navigate).toHaveBeenCalledWith([`/product-details/${productId}`]);
     });
 
     it('Open edit modal', () => {

@@ -47,7 +47,7 @@ describe('ProductsPageComponent', () => {
         expect(component.error).toBeDefined();
         expect(component.modalInfoText).toBeUndefined();
         expect(component.showMessage).toEqual(false);
-        expect(component['currentMessage']).toBeUndefined();
+        expect(component.currentMessage).toBeUndefined();
     });
 
     it('Open product modal', () => {
@@ -89,7 +89,7 @@ describe('ProductsPageComponent', () => {
             }
         ];
         jest.spyOn(productService, 'getAllProducts').mockReturnValue(of(productsData as ProductData[]));
-        component.getAllProducts();
+        component['getAllProducts']();
         expect(productService.getAllProducts).toHaveBeenCalled();
         expect(component.error).toEqual('');
         expect(component.products).toEqual(productsData);
@@ -104,7 +104,7 @@ describe('ProductsPageComponent', () => {
         };
         jest.spyOn(productService, 'getNewProductWithSocket').mockReturnValue(of(productData));
         jest.spyOn(component.productInfoModal, 'openModal');
-        component.getNewProductWithSocket();
+        component['getNewProductWithSocket']();
         expect(productService.getNewProductWithSocket).toHaveBeenCalled();
         expect(component.modalInfoText).toEqual(`Product '${productData.name}' has been added.`);
         expect(component.productInfoModal.openModal).toHaveBeenCalled();
@@ -121,7 +121,7 @@ describe('ProductsPageComponent', () => {
         const deletedProductName = 'Product 1';
         jest.spyOn(productService, 'getProductAfterDeleteWithSocket').mockReturnValue(of([productsData, { deletedProductName }]));
         jest.spyOn(component.productInfoModal, 'openModal');
-        component.getProductAfterDeleteWithSocket();
+        component['getProductAfterDeleteWithSocket']();
         expect(productService.getProductAfterDeleteWithSocket).toHaveBeenCalled();
         expect(component.modalInfoText).toEqual(`Product '${deletedProductName}' has been deleted.`);
         expect(component.products).toEqual(productsData);
@@ -139,7 +139,7 @@ describe('ProductsPageComponent', () => {
         const updatedProductId = '64870f92e622309b8eaa38f6';
         jest.spyOn(productService, 'getUpdatedProductWithSocket').mockReturnValue(of([productsData, { updatedProductId }]));
         jest.spyOn(component.productInfoModal, 'openModal');
-        component.getUpdatedProductWithSocket();
+        component['getUpdatedProductWithSocket']();
         expect(productService.getUpdatedProductWithSocket).toHaveBeenCalled();
         expect(component.products).toEqual(productsData);
         expect(component.modalInfoText).toEqual(`Product '${productsData[0].name}' has been updated.`);

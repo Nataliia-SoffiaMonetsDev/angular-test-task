@@ -104,7 +104,7 @@ describe('InfoModalComponent', () => {
         component.f['productName'].setValue('Product 10');
         component.f['productDescription'].setValue('Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.');
         component.f['productId'].setValue('64870f92e622309b8eaa38f6');
-        const methodResult = component.getFormValue();
+        const methodResult = component['getFormValue']();
         expect(methodResult).toEqual({
             name: 'Product 10',
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.',

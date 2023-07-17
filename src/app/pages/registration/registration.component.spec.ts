@@ -67,9 +67,9 @@ describe('RegistrationComponent', () => {
 
     it('Should navigate to "/products" if user is already logged in', () => {
         jest.spyOn(authService, 'isLoggedIn').mockReturnValue(userData);
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         component.ngOnInit();
-        expect(component.router.navigate).toHaveBeenCalledWith(['/products']);
+        expect(component['router'].navigate).toHaveBeenCalledWith(['/products']);
     });
 
     it('Form value should update from when user changes the input', (() => {
@@ -141,18 +141,18 @@ describe('RegistrationComponent', () => {
 
     it('Successful registration', () => {
         jest.spyOn(authService, 'register').mockReturnValue(of({} as UserData));
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         updateForm(newUser.userName, newUser.email, newUser.password, newUser.confirmPassword);
         component.register();
-        expect(component.router.navigate).toHaveBeenCalledWith(['/login']);
+        expect(component['router'].navigate).toHaveBeenCalledWith(['/login']);
     });
 
     it('Registration failed', () => {
         jest.spyOn(authService, 'register').mockReturnValue(throwError('User already exists'));
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         updateForm(newUser.userName, existingUser.email, newUser.password, newUser.confirmPassword);
         component.register();
-        expect(component.router.navigate).not.toHaveBeenCalledWith(['/login']);
+        expect(component['router'].navigate).not.toHaveBeenCalledWith(['/login']);
         expect(component.error).toBe('User already exists');
     });
 

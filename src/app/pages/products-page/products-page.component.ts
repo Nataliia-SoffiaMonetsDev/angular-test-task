@@ -31,7 +31,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
     public error: string;
     public modalInfoText: string;
     public showMessage: boolean = false;
-    private currentMessage: MessagesData;
+    public currentMessage: MessagesData;
     private destroy$: Subject<void> = new Subject<void>();
 
     @ViewChild('addProductModalComponent') addProductModalComponent: ProductModalComponent;
@@ -89,7 +89,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    public getAllProducts(): void {
+    private getAllProducts(): void {
         this.error = '';
         this.productService.getAllProducts().pipe(
             first(),
@@ -103,7 +103,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    public getNewProductWithSocket(): void {
+    private getNewProductWithSocket(): void {
         this.productService.getNewProductWithSocket().pipe(
             takeUntil(this.destroy$)
         ).subscribe((data: ProductData) => {
@@ -113,7 +113,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    public getProductAfterDeleteWithSocket(): void {
+    private getProductAfterDeleteWithSocket(): void {
         this.productService.getProductAfterDeleteWithSocket().pipe(
             takeUntil(this.destroy$)
         ).subscribe((data: [ProductData[], { deletedProductName: string }]) => {
@@ -123,7 +123,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    public getUpdatedProductWithSocket(): void {
+    private getUpdatedProductWithSocket(): void {
         this.productService.getUpdatedProductWithSocket().pipe(
             takeUntil(this.destroy$)
         ).subscribe((data: [ProductData[], { updatedProductId: string }]) => {

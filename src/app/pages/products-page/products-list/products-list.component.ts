@@ -26,10 +26,10 @@ export class ProductsListComponent {
     @ViewChild('confirmModalComponent') confirmModalComponent: ConfirmModalComponent;
 
     public error: string;
-    public productId: string;
+    private productId: string;
 
     constructor(
-        public router: Router,
+        private router: Router,
         private productService: ProductService
     ) { }
 

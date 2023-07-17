@@ -69,13 +69,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         event.stopPropagation();
     }
 
-    public getNewMessage(): void {
+    private getNewMessage(): void {
         this.chatService.getExternalUserMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
             this.messages.push(data);
         });
     }
 
-    public getAllNotifications(): void {
+    private getAllNotifications(): void {
         this.chatService.requestAllNotifications();
         this.chatService.getAllNotifications().pipe(takeUntil(this.destroy$)).subscribe((data: NotificationData[]) => {
             if (this.userData()) {
@@ -87,18 +87,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
     }
 
-    public getNotificationsAfterDelete(): void {
+    private getNotificationsAfterDelete(): void {
         this.chatService.getNotificationsAfterDelete().pipe(takeUntil(this.destroy$)).subscribe((data: NotificationData[]) => {
             const notifications = data.filter(notification => this.userData()._id === notification.recipientId);
             this.messages = notifications[0].messages;
         });
     }
 
-    public clearAllNotifications(): void {
+    private clearAllNotifications(): void {
         this.chatService.clearAllNotifications(this.userData()._id);
     }
 
-    public getError(): void {
+    private getError(): void {
         this.chatService.getNotificationError().pipe(takeUntil(this.destroy$)).subscribe((error: string) => {
             this.error = error;
         });

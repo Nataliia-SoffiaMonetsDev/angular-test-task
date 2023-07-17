@@ -63,23 +63,23 @@ describe('ProductDetilsComponent', () => {
 
     it('Delete product', () => {
         const productId: string = "64870f92e622309b8eaa38f6";
-        component.productId = productId;
+        component['productId'] = productId;
         jest.spyOn(productService, 'deleteProduct').mockReturnValue(of({} as ProductData[]));
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         component.deleteProduct();
         expect(productService.deleteProduct).toHaveBeenCalledWith(productId);
-        expect(component.router.navigate).toHaveBeenCalledWith(['/products']);
+        expect(component['router'].navigate).toHaveBeenCalledWith(['/products']);
     });
 
     it('Delete product failed', () => {
         const error = 'Failed to delete product';
         const productId: string = "64870f92e622309b8eaa38f6";
-        component.productId = productId;
+        component['productId'] = productId;
         jest.spyOn(productService, 'deleteProduct').mockReturnValue(throwError(error));
-        jest.spyOn(component.router, 'navigate');
+        jest.spyOn(component['router'], 'navigate');
         component.deleteProduct();
         expect(productService.deleteProduct).toHaveBeenCalledWith(productId);
-        expect(component.router.navigate).not.toHaveBeenCalledWith(['/products']);
+        expect(component['router'].navigate).not.toHaveBeenCalledWith(['/products']);
     });
 
     it('Edit product', () => {
@@ -149,10 +149,10 @@ describe('ProductDetilsComponent', () => {
             name: 'Product 1',
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
         };
-        component.productId = productData._id;
+        component['productId'] = productData._id;
         jest.spyOn(productService, 'getProduct').mockReturnValue(of(productData as ProductData));
-        component.getProduct();
-        expect(productService.getProduct).toHaveBeenCalledWith(component.productId);
+        component['getProduct']();
+        expect(productService.getProduct).toHaveBeenCalledWith(component['productId']);
         expect(component.product).toEqual(productData);
         expect(component.loading()).toBe(false);
     });
@@ -166,10 +166,10 @@ describe('ProductDetilsComponent', () => {
             }
         ];
         const updatedProductId = '64870f92e622309b8eaa38f6';
-        component.productId = updatedProductId;
+        component['productId'] = updatedProductId;
         jest.spyOn(productService, 'getUpdatedProductWithSocket').mockReturnValue(of([productsData, { updatedProductId }]));
         jest.spyOn(component.productInfoModal, 'openModal');
-        component.getUpdatedProductWithSocket();
+        component['getUpdatedProductWithSocket']();
         expect(productService.getUpdatedProductWithSocket).toHaveBeenCalled();
         expect(component.product).toEqual(productsData.find((product: ProductData) => product._id === updatedProductId));
         expect(component.modalInfoText).toEqual(`Product '${productsData.find((product: ProductData) => product._id === updatedProductId).name}' has been updated.`);
@@ -188,13 +188,13 @@ describe('ProductDetilsComponent', () => {
         const deletedProductName = 'Product 1';
         jest.spyOn(productService, 'getProductAfterDeleteWithSocket').mockReturnValue(of([productsData, { deletedProductName }]));
         jest.spyOn(component.productInfoModal, 'openModal');
-        jest.spyOn(component.router, 'navigate');
-        component.getProductAfterDeleteWithSocket();
+        jest.spyOn(component['router'], 'navigate');
+        component['getProductAfterDeleteWithSocket']();
         expect(productService.getProductAfterDeleteWithSocket).toHaveBeenCalled();
         expect(component.modalInfoText).toEqual(`Product '${deletedProductName}' has been deleted.`);
         expect(component.productInfoModal.openModal).toHaveBeenCalled();
         setTimeout(() => {
-            expect(component.router.navigate).not.toHaveBeenCalledWith(['/products']);
+            expect(component['router'].navigate).not.toHaveBeenCalledWith(['/products']);
         }, 1500);
     });
 
@@ -206,7 +206,7 @@ describe('ProductDetilsComponent', () => {
         };
         jest.spyOn(productService, 'getNewProductWithSocket').mockReturnValue(of(productData));
         jest.spyOn(component.productInfoModal, 'openModal');
-        component.getNewProductWithSocket();
+        component['getNewProductWithSocket']();
         expect(productService.getNewProductWithSocket).toHaveBeenCalled();
         expect(component.modalInfoText).toEqual(`Product '${productData.name}' has been added.`);
         expect(component.productInfoModal.openModal).toHaveBeenCalled();
@@ -219,7 +219,7 @@ describe('ProductDetilsComponent', () => {
             userName: 'Name',
         }
         jest.spyOn(chatService, 'getExternalUserMessage').mockReturnValue(of(messageData));
-        component.getNewMessage();
+        component['getNewMessage']();
         expect(chatService.getExternalUserMessage).toHaveBeenCalled();
         expect(component.currentMessage).toEqual(messageData);
         expect(component.showMessage).toEqual(true);

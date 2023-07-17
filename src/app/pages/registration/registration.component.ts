@@ -31,7 +31,7 @@ export class RegistrationComponent implements OnInit {
     public get f() { return this.form.controls; };
 
     constructor(
-        public router: Router,
+        private router: Router,
         private formBuilder: FormBuilder,
         private authService: AuthService
     ) { }
