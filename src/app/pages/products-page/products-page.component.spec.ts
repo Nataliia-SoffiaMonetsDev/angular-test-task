@@ -5,7 +5,7 @@ import { ProductService } from 'src/app/_services/product-service/product.servic
 import { Socket, SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 import { MessagesData, ProductData } from 'src/app/shared/interfaces/data.interfaces';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { ChatService } from 'src/app/_services/chat-service/chat.service';
 import { ProductsPageComponent } from './products-page.component';
 
@@ -34,6 +34,10 @@ describe('ProductsPageComponent', () => {
         fixture.detectChanges();
     });
 
+    afterEach(() => {
+        fixture.destroy();
+    });
+
     it('Component successfully created', () => {
         expect(component).toBeTruthy();
     });
@@ -43,7 +47,7 @@ describe('ProductsPageComponent', () => {
         expect(component.error).toBeDefined();
         expect(component.modalInfoText).toBeUndefined();
         expect(component.showMessage).toEqual(false);
-        expect(component.currentMessage).toBeUndefined();
+        expect(component['currentMessage']).toBeUndefined();
     });
 
     it('Open product modal', () => {
@@ -149,9 +153,9 @@ describe('ProductsPageComponent', () => {
             userName: 'Name',
         }
         jest.spyOn(chatService, 'getExternalUserMessage').mockReturnValue(of(messageData));
-        component.getNewMessage();
+        component['getNewMessage']();
         expect(chatService.getExternalUserMessage).toHaveBeenCalled();
-        expect(component.currentMessage).toEqual(messageData);
+        expect(component['currentMessage']).toEqual(messageData);
         expect(component.showMessage).toEqual(true);
         setTimeout(() => {
             expect(component.showMessage).toEqual(false);

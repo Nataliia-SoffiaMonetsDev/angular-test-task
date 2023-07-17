@@ -85,7 +85,7 @@ export class ProductModalComponent implements OnInit {
         this.onEditProduct.emit(this.getFormValue());
     }
 
-    private getFormValue(): ProductData {
+    public getFormValue(): ProductData {
         const product: ProductData = {
             name: this.f['productName'].value,
             description: this.f['productDescription'].value,

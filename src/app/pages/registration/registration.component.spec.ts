@@ -13,8 +13,8 @@ describe('RegistrationComponent', () => {
     let authService: AuthService;
     const userData = {
         "_id": "64a42b84ba332ad08a38045d",
-        "email": "nata@mail.com",
-        "userName": "Nata",
+        "email": "test@mail.com",
+        "userName": "Name",
         "password": "$2b$05$5Ag5rjcSGMsy0zy6OZ1pBezJ5Ssm7/O6Y7ZfgcqOD4VwXfVhsDz36",
         "__v": 0,
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YTQyYjg0YmEzMzJhZDA4YTM4MDQ1ZCIsImVtYWlsIjoibmF0YUBtYWlsLmNvbSIsImlhdCI6MTY4OTE0NjU0OSwiZXhwIjoxNjg5MTg5NzQ5fQ.hh6Hyef7a7nYoWZUkO7bVxN8ikhBDckREx6uezWxfFU"
@@ -26,7 +26,7 @@ describe('RegistrationComponent', () => {
         confirmPassword: "abcd1234"
     };
     const existingUser = {
-        email: "nata@mail.com",
+        email: "test@mail.com",
         password: "abCd1234!"
     };
 
@@ -49,7 +49,11 @@ describe('RegistrationComponent', () => {
         component = fixture.componentInstance;
         authService = TestBed.inject(AuthService);
         fixture.detectChanges();
-    })
+    });
+
+    afterEach(() => {
+        fixture.destroy();
+    });
 
     it('Component successfully created', () => {
         expect(component).toBeTruthy();

@@ -21,14 +21,13 @@ import { ChatForm } from 'src/app/shared/interfaces/forms.interfaces';
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
-    public newMessage$: Observable<string>;
     public messages: MessagesData[] = [];
     public form: FormGroup;
     public currentUser: UserData;
     public error: string;
     private destroy$: Subject<void> = new Subject<void>();
 
-    @ViewChild('chatBody') private chatBodyContainer: ElementRef;
+    @ViewChild('chatBody') public chatBodyContainer: ElementRef;
 
     public get f() {
         return this.form.controls;
@@ -71,7 +70,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
         this.form.reset();
     }
 
-    private scrollChatBody(): void {
+    public scrollChatBody(): void {
         setTimeout(() => {
             this.chatBodyContainer.nativeElement.scroll({
                 top: this.chatBodyContainer.nativeElement.scrollHeight,
@@ -81,13 +80,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
         }, 100);
     }
 
-    private getAllMessages(): void {
+    public getAllMessages(): void {
         this.chatService.getAllMessages().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData[]) => {
             this.messages = data;
         });
     }
 
-    private getNewMessages(): void {
+    public getNewMessages(): void {
         this.chatService.getNewMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
             this.messages.push(data);
             this.scrollChatBody();
@@ -95,7 +94,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    private getError(): void {
+    public getError(): void {
         this.chatService.getMessageError().pipe(takeUntil(this.destroy$)).subscribe((error: string) => {
             this.error = error;
         });

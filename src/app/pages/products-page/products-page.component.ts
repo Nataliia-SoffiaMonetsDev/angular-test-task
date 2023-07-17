@@ -31,7 +31,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
     public error: string;
     public modalInfoText: string;
     public showMessage: boolean = false;
-    public currentMessage: MessagesData;
+    private currentMessage: MessagesData;
     private destroy$: Subject<void> = new Subject<void>();
 
     @ViewChild('addProductModalComponent') addProductModalComponent: ProductModalComponent;
@@ -134,7 +134,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    public getNewMessage(): void {
+    private getNewMessage(): void {
         this.chatService.getExternalUserMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
             this.currentMessage = data;
             this.showMessage = true;

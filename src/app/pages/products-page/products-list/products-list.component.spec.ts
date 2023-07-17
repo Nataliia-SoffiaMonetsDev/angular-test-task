@@ -31,6 +31,10 @@ describe('ProductsListComponent', () => {
         fixture.detectChanges();
     });
 
+    afterEach(() => {
+        fixture.destroy();
+    });
+
     it('Component successfully created', () => {
         expect(component).toBeTruthy();
     });

@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, Signal, computed } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Subject, first, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/_services/auth-service/auth.service';
 import { ChatService } from 'src/app/_services/chat-service/chat.service';
-import { AppRoutingModule } from 'src/app/app-routing.module';
 import { MessagesData, NotificationData, UserData } from 'src/app/shared/interfaces/data.interfaces';
 
 @Component({
@@ -14,7 +13,7 @@ import { MessagesData, NotificationData, UserData } from 'src/app/shared/interfa
     styleUrls: ['./header.component.scss'],
     imports: [
         CommonModule,
-        AppRoutingModule
+        RouterModule
     ]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
@@ -70,13 +69,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         event.stopPropagation();
     }
 
-    private getNewMessage(): void {
+    public getNewMessage(): void {
         this.chatService.getExternalUserMessage().pipe(takeUntil(this.destroy$)).subscribe((data: MessagesData) => {
             this.messages.push(data);
         });
     }
 
-    private getAllNotifications(): void {
+    public getAllNotifications(): void {
         this.chatService.requestAllNotifications();
         this.chatService.getAllNotifications().pipe(takeUntil(this.destroy$)).subscribe((data: NotificationData[]) => {
             if (this.userData()) {
@@ -88,18 +87,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getNotificationsAfterDelete(): void {
+    public getNotificationsAfterDelete(): void {
         this.chatService.getNotificationsAfterDelete().pipe(takeUntil(this.destroy$)).subscribe((data: NotificationData[]) => {
             const notifications = data.filter(notification => this.userData()._id === notification.recipientId);
             this.messages = notifications[0].messages;
         });
     }
 
-    private clearAllNotifications(): void {
+    public clearAllNotifications(): void {
         this.chatService.clearAllNotifications(this.userData()._id);
     }
 
-    private getError(): void {
+    public getError(): void {
         this.chatService.getNotificationError().pipe(takeUntil(this.destroy$)).subscribe((error: string) => {
             this.error = error;
         });
