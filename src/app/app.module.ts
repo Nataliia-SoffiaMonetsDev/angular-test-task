@@ -52,7 +52,7 @@ const config: SocketIoConfig = { url: environment.apiUrl, options: {} };
                 return {
                     cache: new InMemoryCache,
                     link: httpLink.create({
-                        uri: 'http://localhost:5000/graphql'
+                        uri: 'http://ec2-16-171-151-81.eu-north-1.compute.amazonaws.com:5000/graphql'
                     })
                 }
             },
