@@ -9,6 +9,7 @@ import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-sc
 import { InfoModalComponent } from 'src/app/shared/info-modal/info-modal.component';
 import { MessagesNotificationComponent } from 'src/app/shared/messages-notification/messages-notification.component';
 import { ChatService } from 'src/app/_services/chat-service/chat.service';
+import { ProductGraphQlService } from 'src/app/_services/product-service/product-graphQl.service';
 
 @Component({
     standalone: true,
@@ -40,6 +41,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
     constructor(
         private productService: ProductService,
         private chatService: ChatService,
+        private productGraphService: ProductGraphQlService
     ) { }
 
     ngOnInit(): void {
@@ -61,7 +63,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
     }
 
     public deleteProduct(id: string): void {
-        this.productService.deleteProduct(id).pipe(
+        this.productGraphService.deleteProduct(id).pipe(
             first(),
             catchError(error => {
                 this.error = error;
@@ -78,7 +80,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
             name: productInfo.name,
             description: productInfo.description
         };
-        this.productService.createProduct(body).pipe(
+        this.productGraphService.createProduct(body).pipe(
             first(),
             catchError(error => {
                 this.error = error;
@@ -91,7 +93,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
 
     private getAllProducts(): void {
         this.error = '';
-        this.productService.getAllProducts().pipe(
+        this.productGraphService.getAllProducts().pipe(
             first(),
             catchError(error => {
                 this.error = error;
@@ -108,7 +110,7 @@ export class ProductsPageComponent implements OnInit, OnDestroy {
             takeUntil(this.destroy$)
         ).subscribe((data: ProductData) => {
             this.modalInfoText = `Product '${data.name}' has been added.`;
-            this.products.push(data);
+            this.products = [...this.products, data];
             this.productInfoModal.openModal();
         });
     }

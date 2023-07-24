@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, Signal, computed } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Subject, first, takeUntil } from 'rxjs';
+import { AuthGraphQlService } from 'src/app/_services/auth-service/auth-graphQl.service';
 import { AuthService } from 'src/app/_services/auth-service/auth.service';
 import { ChatService } from 'src/app/_services/chat-service/chat.service';
 import { MessagesData, NotificationData, UserData } from 'src/app/shared/interfaces/data.interfaces';
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         public router: Router,
         private authService: AuthService,
         private chatService: ChatService,
+        private authGraphService: AuthGraphQlService
     ) { }
 
     ngOnInit() {
@@ -54,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     public logOut(): void {
-        this.authService.logout().pipe(first()).subscribe(() => {
+        this.authGraphService.logout().pipe(first()).subscribe(() => {
             this.authService.isUserLoggedIn.set(null);
             this.authService.manageLocalStorage();
             this.router.navigate(['/login']);

@@ -10,6 +10,7 @@ import { LoadingScreenComponent } from 'src/app/shared/loading-screen/loading-sc
 import { InfoModalComponent } from 'src/app/shared/info-modal/info-modal.component';
 import { MessagesNotificationComponent } from 'src/app/shared/messages-notification/messages-notification.component';
 import { ChatService } from 'src/app/_services/chat-service/chat.service';
+import { ProductGraphQlService } from 'src/app/_services/product-service/product-graphQl.service';
 
 @Component({
     standalone: true,
@@ -47,6 +48,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         private productService: ProductService,
         private route: ActivatedRoute,
         private chatService: ChatService,
+        private productGraphService: ProductGraphQlService
     ) { }
 
     ngOnInit(): void {
@@ -71,22 +73,20 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     }
 
     public deleteProduct(): void {
-        this.productService.deleteProduct(this.productId).pipe(
+        this.productGraphService.deleteProduct(this.productId).pipe(
             first(),
             catchError(error => {
                 this.error = error;
                 return throwError(error);
             })
-        ).subscribe(() => {
-            this.router.navigate(['/products']);
-        });
+        ).subscribe();
     }
 
     public editProduct(product: ProductData) {
         this.error = '';
         const isProductEdited: boolean = !(product.name === this.product?.name && product.description === this.product?.description);
         if (isProductEdited) {
-            this.productService.updateProduct(product).pipe(
+            this.productGraphService.updateProduct(product).pipe(
                 first(),
                 catchError(error => {
                     this.error = error;
@@ -103,7 +103,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
     private getProduct(): void {
         this.error = '';
-        this.productService.getProduct(this.productId).pipe(
+        this.productGraphService.getProduct(this.productId).pipe(
             first(),
             catchError(error => {
                 this.error = error;

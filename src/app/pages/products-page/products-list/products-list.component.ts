@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductModalComponent } from '../../../shared/product-modal/product-modal.component';
-import { ProductService } from 'src/app/_services/product-service/product.service';
 import { catchError, first, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ProductData } from 'src/app/shared/interfaces/data.interfaces';
 import { ConfirmModalComponent } from 'src/app/shared/confirm-modal/confirm-modal.component';
+import { ProductGraphQlService } from 'src/app/_services/product-service/product-graphQl.service';
 
 @Component({
     standalone: true,
@@ -30,7 +30,7 @@ export class ProductsListComponent {
 
     constructor(
         private router: Router,
-        private productService: ProductService
+        private productGraphService: ProductGraphQlService
     ) { }
 
     public deleteProduct(id: string): void {
@@ -54,7 +54,7 @@ export class ProductsListComponent {
         const existingProduct: ProductData = this.products.find((prod: ProductData) => prod._id === product._id);
         const isProductEdited: boolean = !(product.name === existingProduct.name && product.description === existingProduct.description);
         if (isProductEdited) {
-            this.productService.updateProduct(product).pipe(
+            this.productGraphService.updateProduct(product).pipe(
                 first(),
                 catchError(error => {
                     this.error = error;

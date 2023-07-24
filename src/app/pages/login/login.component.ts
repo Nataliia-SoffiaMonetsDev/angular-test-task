@@ -8,6 +8,7 @@ import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/tex
 import { UserData } from 'src/app/shared/interfaces/data.interfaces';
 import { LoginForm } from 'src/app/shared/interfaces/forms.interfaces';
 import { CommonModule } from '@angular/common';
+import { AuthGraphQlService } from 'src/app/_services/auth-service/auth-graphQl.service';
 
 @Component({
     standalone: true,
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit {
     constructor(
         private router: Router,
         private formBuilder: FormBuilder,
-        private authService: AuthService
+        private authService: AuthService,
+        private authGraphService: AuthGraphQlService
     ) { }
 
     ngOnInit(): void {
@@ -50,7 +52,7 @@ export class LoginComponent implements OnInit {
             return;
         }
         const body: UserData = this.form.getRawValue();
-        this.authService.login(body).pipe(
+        this.authGraphService.login(body).pipe(
             first(),
             catchError(error => {
                 this.error = error;

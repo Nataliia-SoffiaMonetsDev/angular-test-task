@@ -9,6 +9,8 @@ import { UserData } from 'src/app/shared/interfaces/data.interfaces';
 import { CommonModule } from '@angular/common';
 import { TextInputComponent } from 'src/app/shared/inputs/text-input/text-input.component';
 import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/textarea-input.component';
+import { ApolloModule } from 'apollo-angular';
+import { AuthGraphQlService } from 'src/app/_services/auth-service/auth-graphQl.service';
 
 @Component({
     standalone: true,
@@ -20,7 +22,8 @@ import { TextareaInputComponent } from 'src/app/shared/inputs/textarea-input/tex
         FormsModule,
         ReactiveFormsModule,
         TextInputComponent,
-        TextareaInputComponent
+        TextareaInputComponent,
+        ApolloModule
     ]
 })
 export class RegistrationComponent implements OnInit {
@@ -33,7 +36,8 @@ export class RegistrationComponent implements OnInit {
     constructor(
         private router: Router,
         private formBuilder: FormBuilder,
-        private authService: AuthService
+        private authService: AuthService,
+        private authGraphService: AuthGraphQlService
     ) { }
 
     ngOnInit(): void {
@@ -67,7 +71,7 @@ export class RegistrationComponent implements OnInit {
             password: this.f['password'].value,
             userName: this.f['userName'].value
         };
-        this.authService.register(body).pipe(
+        this.authGraphService.register(body).pipe(
             first(),
             catchError(error => {
                 this.error = error;
